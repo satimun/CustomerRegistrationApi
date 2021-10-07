@@ -107,6 +107,8 @@ namespace CustomerRegistrationAPI.Engine
                      UserCode = Husercode.ToString();
                 */
 
+                if (!GetType().Name.Equals("OauthAccessTokenGet")) ValidatePermission();
+
                 if (dataReq  != null)
                 {
                     try
@@ -169,13 +171,13 @@ namespace CustomerRegistrationAPI.Engine
         private void ValidatePermission()
         {
 
-            if (RecaptchaRequire && !StaticValue.GetInstant().IsDevMode)
+           /* if (RecaptchaRequire && !StaticValue.GetInstant().IsDevMode)
             {
                 if (!Recaptha.ReCaptchaPassed(RecaptchaResponse))
                 {
                     throw new Exception(ErrorCode.V000.ToString());
                 }
-            }
+            }*/
 
             // check access token
             var accessToken = Store.AccessToken.GetInstant().Get(AccessToken);

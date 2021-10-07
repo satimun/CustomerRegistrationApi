@@ -10,5 +10,11 @@ namespace CustomerRegistrationModel.Model.Response.Member
         public string Fullname;
         public string Email;
         public string Username;
+        public string Picture;
+        public string Type
+        {
+            get { return String.IsNullOrEmpty(Code) ? "M" : "S"; }
+        }
+
     }
 }

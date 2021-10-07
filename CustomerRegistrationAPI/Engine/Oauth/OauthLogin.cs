@@ -40,6 +40,7 @@ namespace CustomerRegistrationAPI.Engine.Oauth
 
                 res.token = pass.NewID();
                 res.email = user.email;
+                res.username = user.name;
 
                 var token = new pdrga_t_token()
                 {

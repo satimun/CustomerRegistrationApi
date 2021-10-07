@@ -90,7 +90,7 @@ namespace CustomerRegistrationAPI.Engine.Store
             if (userId.HasValue)
             {
                 var tmp = GetMember(userId.Value);
-                return tmp != null ? string.Concat(tmp.name, " : ", tmp.email) : null;
+                return tmp != null ? string.Concat(tmp.code, " : ", tmp.name) : null;
             }
             return null;
         }

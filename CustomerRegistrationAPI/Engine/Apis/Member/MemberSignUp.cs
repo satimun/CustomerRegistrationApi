@@ -52,7 +52,7 @@ namespace CustomerRegistrationAPI.Engine.Apis.Member
                     email = dataReq.email.Trim(),
                     first_name = dataReq.first_name.Trim(),
                     last_name = dataReq.last_name.Trim(),
-                    password = KKFCoreEngine.Util.EncryptUtil.Hash(pass),
+                    password = pass,
                     mobile_no = dataReq.mobile_no,
                     location = dataReq.location,
                     shipowner_amt = dataReq.shipowner_amt,

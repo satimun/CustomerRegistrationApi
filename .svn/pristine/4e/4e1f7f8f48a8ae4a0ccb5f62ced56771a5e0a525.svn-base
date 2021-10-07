@@ -1,0 +1,401 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using KKFCoreEngine.Util;
+
+namespace PDK1ADO.Connect.Mssql.Product
+{
+    public class PDK1_M_RoyHuAdo:ProductBase
+    {
+        private static PDK1_M_RoyHuAdo instant;
+
+        public static PDK1_M_RoyHuAdo GetInstant()
+        {
+            if (instant == null) instant = new PDK1_M_RoyHuAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private PDK1_M_RoyHuAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu> ListActive()
+        {
+            string cmd = " SELECT * FROM product.dbo.PDK1_M_RoyHu ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu> GetData(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@brn_pay", d.brn_pay);
+            param.Add("@bill_no", d.bill_no);
+            param.Add("@r_type", d.r_type);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@item", d.item);
+            param.Add("@mach_id", d.mach_id);
+            param.Add("@stock", d.stock);
+            param.Add("@pay_date", d.pay_date);
+            param.Add("@quantity", d.quantity);
+            param.Add("@weight", d.weight);
+            param.Add("@staff", d.staff);
+            param.Add("@zchk", d.zchk);
+            param.Add("@rec_date", d.rec_date);
+            param.Add("@rec_qty", d.rec_qty);
+            param.Add("@rec_wei", d.rec_wei);
+            param.Add("@u_price", d.u_price);
+            param.Add("@t_price", d.t_price);
+            param.Add("@s_price", d.s_price);
+            param.Add("@p_bill", d.p_bill);
+            param.Add("@flag", d.flag);
+            param.Add("@bill", d.bill);
+            param.Add("@rec_item", d.rec_item);
+            param.Add("@pay_bill", d.pay_bill);
+            param.Add("@group", d.group);
+            param.Add("@p_type", d.p_type);
+            param.Add("@pay_chk", d.pay_chk);
+            param.Add("@tran_flag", d.tran_flag);
+            param.Add("@bar_grp", d.bar_grp);
+            param.Add("@pqgradecd", d.pqgradecd);
+            param.Add("@prb_code", d.prb_code);
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM product.dbo.PDK1_M_RoyHu " +
+            $"WHERE (@brn_pay IS NULL OR brn_pay = @brn_pay) " +
+            $"  AND (@bill_no IS NULL OR bill_no = @bill_no) " +
+            $"  AND (@r_type IS NULL OR r_type = @r_type) " +
+            $"  AND (@oun_date IS NULL OR oun_date = @oun_date) " +
+            $"  AND (@item IS NULL OR item = @item) " +
+            $"  AND (@mach_id IS NULL OR mach_id = @mach_id) " +
+            $"  AND (@stock IS NULL OR stock = @stock) " +
+            $"  AND (@pay_date IS NULL OR pay_date = @pay_date) " +
+            $"  AND (@quantity IS NULL OR quantity = @quantity) " +
+            $"  AND (@weight IS NULL OR weight = @weight) " +
+            $"  AND (@staff IS NULL OR staff = @staff) " +
+            $"  AND (@zchk IS NULL OR zchk = @zchk) " +
+            $"  AND (@rec_date IS NULL OR rec_date = @rec_date) " +
+            $"  AND (@rec_qty IS NULL OR rec_qty = @rec_qty) " +
+            $"  AND (@rec_wei IS NULL OR rec_wei = @rec_wei) " +
+            $"  AND (@u_price IS NULL OR u_price = @u_price) " +
+            $"  AND (@t_price IS NULL OR t_price = @t_price) " +
+            $"  AND (@s_price IS NULL OR s_price = @s_price) " +
+            $"  AND (@p_bill IS NULL OR p_bill = @p_bill) " +
+            $"  AND (@flag IS NULL OR flag = @flag) " +
+            $"  AND (@bill IS NULL OR bill = @bill) " +
+            $"  AND (@rec_item IS NULL OR rec_item = @rec_item) " +
+            $"  AND (@pay_bill IS NULL OR pay_bill = @pay_bill) " +
+            $"  AND (@group IS NULL OR group = @group) " +
+            $"  AND (@p_type IS NULL OR p_type = @p_type) " +
+            $"  AND (@pay_chk IS NULL OR pay_chk = @pay_chk) " +
+            $"  AND (@tran_flag IS NULL OR tran_flag = @tran_flag) " +
+            $"  AND (@bar_grp IS NULL OR bar_grp = @bar_grp) " +
+            $"  AND (@pqgradecd IS NULL OR pqgradecd = @pqgradecd) " +
+            $"  AND (@prb_code IS NULL OR prb_code = @prb_code) ";
+            //$"AND (brn_pay LIKE @txtSearch OR brn_pay LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu>(cmd, param).ToList();
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu> Search(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            /*
+            param.Add("@brn_payIsNull", d.brn_pay.ListNull()); 
+            param.Add("@bill_noIsNull", d.bill_no.ListNull()); 
+            param.Add("@r_typeIsNull", d.r_type.ListNull()); 
+            param.Add("@oun_dateIsNull", d.oun_date.ListNull()); 
+            param.Add("@itemIsNull", d.item.ListNull()); 
+            param.Add("@mach_idIsNull", d.mach_id.ListNull()); 
+            param.Add("@stockIsNull", d.stock.ListNull()); 
+            param.Add("@pay_dateIsNull", d.pay_date.ListNull()); 
+            param.Add("@quantityIsNull", d.quantity.ListNull()); 
+            param.Add("@weightIsNull", d.weight.ListNull()); 
+            param.Add("@staffIsNull", d.staff.ListNull()); 
+            param.Add("@zchkIsNull", d.zchk.ListNull()); 
+            param.Add("@rec_dateIsNull", d.rec_date.ListNull()); 
+            param.Add("@rec_qtyIsNull", d.rec_qty.ListNull()); 
+            param.Add("@rec_weiIsNull", d.rec_wei.ListNull()); 
+            param.Add("@u_priceIsNull", d.u_price.ListNull()); 
+            param.Add("@t_priceIsNull", d.t_price.ListNull()); 
+            param.Add("@s_priceIsNull", d.s_price.ListNull()); 
+            param.Add("@p_billIsNull", d.p_bill.ListNull()); 
+            param.Add("@flagIsNull", d.flag.ListNull()); 
+            param.Add("@billIsNull", d.bill.ListNull()); 
+            param.Add("@rec_itemIsNull", d.rec_item.ListNull()); 
+            param.Add("@pay_billIsNull", d.pay_bill.ListNull()); 
+            param.Add("@groupIsNull", d.group.ListNull()); 
+            param.Add("@p_typeIsNull", d.p_type.ListNull()); 
+            param.Add("@pay_chkIsNull", d.pay_chk.ListNull()); 
+            param.Add("@tran_flagIsNull", d.tran_flag.ListNull()); 
+            param.Add("@bar_grpIsNull", d.bar_grp.ListNull()); 
+            param.Add("@pqgradecdIsNull", d.pqgradecd.ListNull()); 
+            param.Add("@prb_codeIsNull", d.prb_code.ListNull()); 
+            param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+            */
+
+            string cmd = "";
+            /*
+            string cmd = "SELECT * FROM product.dbo.PDK1_M_RoyHu " +
+            $"WHERE (@brn_payIsNull IS NULL OR brn_pay IN ('{ d.brn_pay.Join("','") }')) " +
+            $"AND (@bill_noIsNull IS NULL OR bill_no IN ('{ d.bill_no.Join("','") }')) " +
+            $"AND (@r_typeIsNull IS NULL OR r_type IN ('{ d.r_type.Join("','") }')) " +
+            $"AND (@oun_dateIsNull IS NULL OR oun_date IN ('{ d.oun_date.Join("','") }')) " +
+            $"AND (@itemIsNull IS NULL OR item IN ('{ d.item.Join("','") }')) " +
+            $"AND (@mach_idIsNull IS NULL OR mach_id IN ('{ d.mach_id.Join("','") }')) " +
+            $"AND (@stockIsNull IS NULL OR stock IN ('{ d.stock.Join("','") }')) " +
+            $"AND (@pay_dateIsNull IS NULL OR pay_date IN ('{ d.pay_date.Join("','") }')) " +
+            $"AND (@quantityIsNull IS NULL OR quantity IN ('{ d.quantity.Join("','") }')) " +
+            $"AND (@weightIsNull IS NULL OR weight IN ('{ d.weight.Join("','") }')) " +
+            $"AND (@staffIsNull IS NULL OR staff IN ('{ d.staff.Join("','") }')) " +
+            $"AND (@zchkIsNull IS NULL OR zchk IN ('{ d.zchk.Join("','") }')) " +
+            $"AND (@rec_dateIsNull IS NULL OR rec_date IN ('{ d.rec_date.Join("','") }')) " +
+            $"AND (@rec_qtyIsNull IS NULL OR rec_qty IN ('{ d.rec_qty.Join("','") }')) " +
+            $"AND (@rec_weiIsNull IS NULL OR rec_wei IN ('{ d.rec_wei.Join("','") }')) " +
+            $"AND (@u_priceIsNull IS NULL OR u_price IN ('{ d.u_price.Join("','") }')) " +
+            $"AND (@t_priceIsNull IS NULL OR t_price IN ('{ d.t_price.Join("','") }')) " +
+            $"AND (@s_priceIsNull IS NULL OR s_price IN ('{ d.s_price.Join("','") }')) " +
+            $"AND (@p_billIsNull IS NULL OR p_bill IN ('{ d.p_bill.Join("','") }')) " +
+            $"AND (@flagIsNull IS NULL OR flag IN ('{ d.flag.Join("','") }')) " +
+            $"AND (@billIsNull IS NULL OR bill IN ('{ d.bill.Join("','") }')) " +
+            $"AND (@rec_itemIsNull IS NULL OR rec_item IN ('{ d.rec_item.Join("','") }')) " +
+            $"AND (@pay_billIsNull IS NULL OR pay_bill IN ('{ d.pay_bill.Join("','") }')) " +
+            $"AND (@groupIsNull IS NULL OR group IN ('{ d.group.Join("','") }')) " +
+            $"AND (@p_typeIsNull IS NULL OR p_type IN ('{ d.p_type.Join("','") }')) " +
+            $"AND (@pay_chkIsNull IS NULL OR pay_chk IN ('{ d.pay_chk.Join("','") }')) " +
+            $"AND (@tran_flagIsNull IS NULL OR tran_flag IN ('{ d.tran_flag.Join("','") }')) " +
+            $"AND (@bar_grpIsNull IS NULL OR bar_grp IN ('{ d.bar_grp.Join("','") }')) " +
+            $"AND (@pqgradecdIsNull IS NULL OR pqgradecd IN ('{ d.pqgradecd.Join("','") }')) " +
+            $"AND (@prb_codeIsNull IS NULL OR prb_code IN ('{ d.prb_code.Join("','") }')) " +
+            $"AND (brn_pay LIKE @txtSearch OR brn_pay LIKE @txtSearch) " ;  
+            //"ORDER BY  ;"; 
+            */
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu>(cmd, param).ToList();
+            return res;
+        }
+
+        public int Insert(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@brn_pay", d.brn_pay);
+            param.Add("@bill_no", d.bill_no);
+            param.Add("@r_type", d.r_type);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@item", d.item);
+            param.Add("@mach_id", d.mach_id);
+            param.Add("@stock", d.stock);
+            param.Add("@pay_date", d.pay_date);
+            param.Add("@quantity", d.quantity);
+            param.Add("@weight", d.weight);
+            param.Add("@staff", d.staff);
+            param.Add("@zchk", d.zchk);
+            param.Add("@rec_date", d.rec_date);
+            param.Add("@rec_qty", d.rec_qty);
+            param.Add("@rec_wei", d.rec_wei);
+            param.Add("@u_price", d.u_price);
+            param.Add("@t_price", d.t_price);
+            param.Add("@s_price", d.s_price);
+            param.Add("@p_bill", d.p_bill);
+            param.Add("@flag", d.flag);
+            param.Add("@bill", d.bill);
+            param.Add("@rec_item", d.rec_item);
+            param.Add("@pay_bill", d.pay_bill);
+            param.Add("@group", d.group);
+            param.Add("@p_type", d.p_type);
+            param.Add("@pay_chk", d.pay_chk);
+            param.Add("@tran_flag", d.tran_flag);
+            param.Add("@bar_grp", d.bar_grp);
+            param.Add("@pqgradecd", d.pqgradecd);
+            param.Add("@prb_code", d.prb_code);
+            string cmd = "INSERT INTO product.dbo.PDK1_M_RoyHu " +
+            $"      (brn_pay, bill_no, r_type, oun_date, item, mach_id, stock, pay_date, quantity, weight, staff, zchk, rec_date, rec_qty, rec_wei, u_price, t_price, s_price, p_bill, flag, bill, rec_item, pay_bill, group, p_type, pay_chk, tran_flag, bar_grp, pqgradecd, prb_code) " +
+            $"VALUES(@brn_pay, @bill_no, @r_type, @oun_date, @item, @mach_id, @stock, @pay_date, @quantity, @weight, @staff, @zchk, @rec_date, @rec_qty, @rec_wei, @u_price, @t_price, @s_price, @p_bill, @flag, @bill, @rec_item, @pay_bill, @group, @p_type, @pay_chk, @tran_flag, @bar_grp, @pqgradecd, @prb_code); " +
+            $"SELECT SCOPE_IDENTITY();";
+            return ExecuteScalar<int>(cmd, param);
+        }
+
+        public int Update(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@brn_pay", d.brn_pay.GetValue());
+            param.Add("@bill_no", d.bill_no.GetValue());
+            param.Add("@r_type", d.r_type.GetValue());
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@item", d.item);
+            param.Add("@mach_id", d.mach_id.GetValue());
+            param.Add("@stock", d.stock.GetValue());
+            param.Add("@pay_date", d.pay_date);
+            param.Add("@quantity", d.quantity);
+            param.Add("@weight", d.weight);
+            param.Add("@staff", d.staff.GetValue());
+            param.Add("@zchk", d.zchk.GetValue());
+            param.Add("@rec_date", d.rec_date);
+            param.Add("@rec_qty", d.rec_qty);
+            param.Add("@rec_wei", d.rec_wei);
+            param.Add("@u_price", d.u_price);
+            param.Add("@t_price", d.t_price);
+            param.Add("@s_price", d.s_price);
+            param.Add("@p_bill", d.p_bill.GetValue());
+            param.Add("@flag", d.flag);
+            param.Add("@bill", d.bill.GetValue());
+            param.Add("@rec_item", d.rec_item);
+            param.Add("@pay_bill", d.pay_bill.GetValue());
+            param.Add("@group", d.group);
+            param.Add("@p_type", d.p_type.GetValue());
+            param.Add("@pay_chk", d.pay_chk.GetValue());
+            param.Add("@tran_flag", d.tran_flag.GetValue());
+            param.Add("@bar_grp", d.bar_grp.GetValue());
+            param.Add("@pqgradecd", d.pqgradecd.GetValue());
+            param.Add("@prb_code", d.prb_code.GetValue());
+            string cmd = "";
+            /*
+                   cmd = UPDATE product.dbo.PDK1_M_RoyHu "+
+            "SET brn_pay = @brn_pay "+ 
+            " , bill_no = @bill_no "+ 
+            " , r_type = @r_type "+ 
+            " , oun_date = @oun_date "+ 
+            " , item = @item "+ 
+            " , mach_id = @mach_id "+ 
+            " , stock = @stock "+ 
+            " , pay_date = @pay_date "+ 
+            " , quantity = @quantity "+ 
+            " , weight = @weight "+ 
+            " , staff = @staff "+ 
+            " , zchk = @zchk "+ 
+            " , rec_date = @rec_date "+ 
+            " , rec_qty = @rec_qty "+ 
+            " , rec_wei = @rec_wei "+ 
+            " , u_price = @u_price "+ 
+            " , t_price = @t_price "+ 
+            " , s_price = @s_price "+ 
+            " , p_bill = @p_bill "+ 
+            " , flag = @flag "+ 
+            " , bill = @bill "+ 
+            " , rec_item = @rec_item "+ 
+            " , pay_bill = @pay_bill "+ 
+            " , group = @group "+ 
+            " , p_type = @p_type "+ 
+            " , pay_chk = @pay_chk "+ 
+            " , tran_flag = @tran_flag "+ 
+            " , bar_grp = @bar_grp "+ 
+            " , pqgradecd = @pqgradecd "+ 
+            " , prb_code = @prb_code "+ 
+            "WHERE brn_pay = @brn_pay "+ 
+            " AND bill_no = @bill_no "+ 
+            " AND r_type = @r_type "+ 
+            " AND oun_date = @oun_date "+ 
+            " AND item = @item "+ 
+            " AND mach_id = @mach_id "+ 
+            " AND stock = @stock "+ 
+            " AND pay_date = @pay_date "+ 
+            " AND quantity = @quantity "+ 
+            " AND weight = @weight "+ 
+            " AND staff = @staff "+ 
+            " AND zchk = @zchk "+ 
+            " AND rec_date = @rec_date "+ 
+            " AND rec_qty = @rec_qty "+ 
+            " AND rec_wei = @rec_wei "+ 
+            " AND u_price = @u_price "+ 
+            " AND t_price = @t_price "+ 
+            " AND s_price = @s_price "+ 
+            " AND p_bill = @p_bill "+ 
+            " AND flag = @flag "+ 
+            " AND bill = @bill "+ 
+            " AND rec_item = @rec_item "+ 
+            " AND pay_bill = @pay_bill "+ 
+            " AND group = @group "+ 
+            " AND p_type = @p_type "+ 
+            " AND pay_chk = @pay_chk "+ 
+            " AND tran_flag = @tran_flag "+ 
+            " AND bar_grp = @bar_grp "+ 
+            " AND pqgradecd = @pqgradecd "+ 
+            " AND prb_code = @prb_code "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+        public int Delete(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RoyHu d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@brn_pay", d.brn_pay.GetValue());
+            param.Add("@bill_no", d.bill_no.GetValue());
+            param.Add("@r_type", d.r_type.GetValue());
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@item", d.item);
+            param.Add("@mach_id", d.mach_id.GetValue());
+            param.Add("@stock", d.stock.GetValue());
+            param.Add("@pay_date", d.pay_date);
+            param.Add("@quantity", d.quantity);
+            param.Add("@weight", d.weight);
+            param.Add("@staff", d.staff.GetValue());
+            param.Add("@zchk", d.zchk.GetValue());
+            param.Add("@rec_date", d.rec_date);
+            param.Add("@rec_qty", d.rec_qty);
+            param.Add("@rec_wei", d.rec_wei);
+            param.Add("@u_price", d.u_price);
+            param.Add("@t_price", d.t_price);
+            param.Add("@s_price", d.s_price);
+            param.Add("@p_bill", d.p_bill.GetValue());
+            param.Add("@flag", d.flag);
+            param.Add("@bill", d.bill.GetValue());
+            param.Add("@rec_item", d.rec_item);
+            param.Add("@pay_bill", d.pay_bill.GetValue());
+            param.Add("@group", d.group);
+            param.Add("@p_type", d.p_type.GetValue());
+            param.Add("@pay_chk", d.pay_chk.GetValue());
+            param.Add("@tran_flag", d.tran_flag.GetValue());
+            param.Add("@bar_grp", d.bar_grp.GetValue());
+            param.Add("@pqgradecd", d.pqgradecd.GetValue());
+            param.Add("@prb_code", d.prb_code.GetValue());
+            string cmd = "";
+            /*
+                   cmd = DELETE FROM product.dbo.PDK1_M_RoyHu "+
+            "WHERE brn_pay = @brn_pay "+ 
+            " AND bill_no = @bill_no "+ 
+            " AND r_type = @r_type "+ 
+            " AND oun_date = @oun_date "+ 
+            " AND item = @item "+ 
+            " AND mach_id = @mach_id "+ 
+            " AND stock = @stock "+ 
+            " AND pay_date = @pay_date "+ 
+            " AND quantity = @quantity "+ 
+            " AND weight = @weight "+ 
+            " AND staff = @staff "+ 
+            " AND zchk = @zchk "+ 
+            " AND rec_date = @rec_date "+ 
+            " AND rec_qty = @rec_qty "+ 
+            " AND rec_wei = @rec_wei "+ 
+            " AND u_price = @u_price "+ 
+            " AND t_price = @t_price "+ 
+            " AND s_price = @s_price "+ 
+            " AND p_bill = @p_bill "+ 
+            " AND flag = @flag "+ 
+            " AND bill = @bill "+ 
+            " AND rec_item = @rec_item "+ 
+            " AND pay_bill = @pay_bill "+ 
+            " AND group = @group "+ 
+            " AND p_type = @p_type "+ 
+            " AND pay_chk = @pay_chk "+ 
+            " AND tran_flag = @tran_flag "+ 
+            " AND bar_grp = @bar_grp "+ 
+            " AND pqgradecd = @pqgradecd "+ 
+            " AND prb_code = @prb_code "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+    }
+}

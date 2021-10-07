@@ -1,0 +1,98 @@
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+
+  // DataBase  : 0 จริง 1 สำรอง
+  "UseDB": "0",
+
+  // BRANCH : KKF, KR ,Local
+  "UseBRN": "KKF",
+
+  "KKFDB_Connect": {
+    "Mssql": {
+      "product": "Server=191.20.2.27;Uid=sa;PASSWORD=abc123;database=product;Max Pool Size=400;Connect Timeout=600;",
+      "centraldb": "Server=191.20.20.182;Uid=sa;PASSWORD=abc123;database=centraldb;Max Pool Size=400;Connect Timeout=600;",
+      "kkf_api": "Server=191.20.2.3;Uid=sa;PASSWORD=abc123;database=kkf_api;Max Pool Size=400;Connect Timeout=600;"
+    },
+    "Oracle": {
+      "HrmsV10": "User Id=PERS1;Password=PERS123;Data Source=191.20.2.36:1521/HRMS;Max Pool Size=100;Connection Timeout=60;"
+    },
+    "DBase": {
+      "product": {
+        "bwc_db": "",
+        "kkf_db": "",
+        "cy_db": "",
+        "nr_db": "",
+        "bs_db": ""
+      }
+    }
+  },
+
+  "KKFDBBak_Connect": {
+    "Mssql": {
+      "product": "Server=191.20.2.70;Uid=sa;PASSWORD=abc123;database=product;Max Pool Size=400;Connect Timeout=600;",
+      "centraldb": "Server=191.20.2.70;Uid=sa;PASSWORD=abc123;database=centraldb;Max Pool Size=400;Connect Timeout=600;",
+      "kkf_api": "Server=191.20.2.70;Uid=sa;PASSWORD=abc123;database=kkf_api;Max Pool Size=400;Connect Timeout=600;"
+    },
+    "Oracle": {
+      "HrmsV10": ""
+    },
+    "DBase": {
+      "product": {
+        "bwc_db": "",
+        "kkf_db": "",
+        "cy_db": "",
+        "nr_db": "",
+        "bs_db": ""
+      }
+    }
+  },
+   
+  "LocalDB_Connect": {
+    "Mssql": {
+      "product": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=product;Max Pool Size=400;Connect Timeout=600;",
+      "centraldb": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=centraldb;Max Pool Size=400;Connect Timeout=600;",
+      "kkf_api": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=kkf_api;Max Pool Size=400;Connect Timeout=600;"
+    },
+    "Oracle": {
+      "HrmsV10": "User Id=PERS;Password=pers123;Data Source=191.20.2.36:1521/HRMS:Min Pool Size=10,Incr Pool Size=5;Decr Pool Size=2;Connection Timeout=60;"
+    },
+    "DBase": {
+      "product": {
+        "bwc_db": "\\\\191.20.2.45\\Vol\\BKKF\\DB",
+        "kkf_db": "",
+        "cy_db": "",
+        "nr_db": "",
+        "bs_db": ""
+      }
+    }
+  },
+
+  "LocalDBBak_Connec": {
+    "Mssql": {
+      "product": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=product;Max Pool Size=400;Connect Timeout=600;",
+      "centraldb": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=centraldb;Max Pool Size=400;Connect Timeout=600;",
+      "kkf_api": "Server=IFA07-WARAYU;Uid=sa;PASSWORD=abc123;database=kkf_api;Max Pool Size=400;Connect Timeout=600;"
+    },
+    "Oracle": {
+      "HrmsV10": "User Id=PERS;Password=pers123;Data Source=191.20.2.36:1521/HRMS:Min Pool Size=10,Incr Pool Size=5;Decr Pool Size=2;Connection Timeout=60;"
+    },
+    "DBase": {
+      "product": {
+        "bwc_db": "",
+        "kkf_db": "",
+        "cy_db": "",
+        "nr_db": "",
+        "bs_db": ""
+      }
+    }
+  }
+
+
+}

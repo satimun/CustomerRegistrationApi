@@ -1,0 +1,67 @@
+﻿using PDK1Model.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Engine.PDK1
+{
+    public class PDK1_M_RhPaGetAPI:EngineBase<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RhPa>
+    {
+        public PDK1_M_RhPaGetAPI()
+        {
+            PermissionKey = "ADMIN";
+
+        }
+
+        protected override void ExecuteChild(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RhPa dataReq, ResponseAPI dataRes)
+        {
+            var res = new List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RhPa>();
+            var roles = PDK1ADO.Connect.Mssql.Product.PDK1_M_RhPaAdo.GetInstant().GetData(dataReq);
+
+            foreach (var x in roles)
+            {
+                var tmp = new PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RhPa();
+
+                tmp.brn_pay = x.brn_pay;
+                tmp.bill_no = x.bill_no;
+                tmp.oun_date = x.oun_date;
+                tmp.rec_date = x.rec_date;
+                tmp.item = x.item;
+                tmp.mach_id = x.mach_id;
+                tmp.stock = x.stock;
+                tmp.pay_date = x.pay_date;
+                tmp.quantity = x.quantity;
+                tmp.weight = x.weight;
+                tmp.staff = x.staff;
+                tmp.r_type = x.r_type;
+                tmp.zchk = x.zchk;
+                tmp.rec_qty = x.rec_qty;
+                tmp.rec_wei = x.rec_wei;
+                tmp.u_price = x.u_price;
+                tmp.t_price = x.t_price;
+                tmp.s_price = x.s_price;
+                tmp.pay_bill = x.pay_bill;
+                tmp.bill = x.bill;
+                tmp.roy_prc = x.roy_prc;
+                tmp.pa_prc = x.pa_prc;
+                tmp.flag = x.flag;
+                tmp.post_flag = x.post_flag;
+                tmp.edit_flag = x.edit_flag;
+                tmp.barcode = x.barcode;
+                tmp.group = x.group;
+                tmp.ppost_flag = x.ppost_flag;
+                tmp.branch = x.branch;
+                tmp.o_flag = x.o_flag;
+                tmp.prn_flag = x.prn_flag;
+                tmp.backupflag = x.backupflag;
+                tmp.bar_grp = x.bar_grp;
+                tmp.pqgradecd = x.pqgradecd;
+                tmp.prb_code = x.prb_code;
+
+                res.Add(tmp);
+            }
+            dataRes.data = res;
+        }
+    }
+}

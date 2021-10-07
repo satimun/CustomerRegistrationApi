@@ -1,0 +1,40 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PDK1Model.Model.Dataset.Mssql.Product
+{
+    public class PDK1_M_RoyHu
+    {
+        public string brn_pay;
+        public string bill_no;
+        public string r_type;
+        public DateTime? oun_date;
+        public decimal? item;
+        public string mach_id;
+        public string stock;
+        public DateTime? pay_date;
+        public decimal? quantity;
+        public decimal? weight;
+        public string staff;
+        public string zchk;
+        public DateTime? rec_date;
+        public decimal? rec_qty;
+        public decimal? rec_wei;
+        public decimal? u_price;
+        public decimal? t_price;
+        public decimal? s_price;
+        public string p_bill;
+        public Boolean? flag;
+        public string bill;
+        public decimal? rec_item;
+        public string pay_bill;
+        public decimal? group;
+        public string p_type;
+        public string pay_chk;
+        public string tran_flag;
+        public string bar_grp;
+        public string pqgradecd;
+        public string prb_code;
+    }
+}

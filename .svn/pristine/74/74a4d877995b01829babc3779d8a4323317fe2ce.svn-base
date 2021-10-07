@@ -1,0 +1,55 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace PDK1ADO.Connect.Mssql.Centraldb
+{
+    public class VW_CsStockDetAdo : CentraldbBase
+    {
+        private static VW_CsStockDetAdo instant;
+
+        public static VW_CsStockDetAdo GetInstant()
+        {
+            if (instant == null) instant = new VW_CsStockDetAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private VW_CsStockDetAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Centraldb.VW_CsStockDet> ListActive()
+        {
+            string cmd = " SELECT * FROM centraldb.dbo.CsProductType ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Centraldb.VW_CsStockDet>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Centraldb.VW_CsStockDet> GetData(PDK1Model.Model.Dataset.Mssql.Centraldb.VW_CsStockDet d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@stock", d.stock);
+            param.Add("@productcate_grp", d.stock);
+
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM centraldb.dbo.CsProductType " +
+            $"  WHERE (@stock IS NULL OR stock = @stock) " +
+            $"  AND (@productcate_grp IS NULL OR productcate_grp = @productcate_grp) ";
+ 
+
+
+            //$"AND (PRODUCT_TYPE LIKE @txtSearch OR PRODUCT_TYPE LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Centraldb.VW_CsStockDet>(cmd, param).ToList();
+            return res;
+        }
+
+    }
+}

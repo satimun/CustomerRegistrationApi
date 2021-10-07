@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using KKFCoreEngine.Util;
+
+namespace PDK1Model.Model.Dataset.Mssql.Product
+{
+    public class PDS_PrdBrnH
+    {
+        public string brn_code { get; set; }
+        public string brn_desc { get; set; }
+        public string ipaddress { get; set; }
+        public string servername { get; set; }
+        public string locatdoc { get; set; }
+        public string locatscan { get; set; }
+        public DateTime? date_sql { get; set; }
+        public string device_dos { get; set; }
+        public string prd_bill { get; set; }
+        public string brn_prd { get; set; }
+        public string brn_physical { get; set; }
+        public string brn_profit { get; set; }
+        public string brn_profitdesc { get; set; }
+        public string user_id { get; set; }
+        public DateTime? user_date { get; set; }
+    }
+}

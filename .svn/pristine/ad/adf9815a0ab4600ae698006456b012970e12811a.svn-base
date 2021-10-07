@@ -1,0 +1,154 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace PDK1ADO.Connect.Mssql.Product
+{
+    public class PDS_VillageExAdo : ProductBase
+    {
+        private static PDS_VillageExAdo instant;
+
+        public static PDS_VillageExAdo GetInstant()
+        {
+            if (instant == null) instant = new PDS_VillageExAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private PDS_VillageExAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx> ListActive()
+        {
+            string cmd = " SELECT * FROM product.dbo.PDS_VILLAGEEX ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx> GetData(PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@VILL_ID", d.vill_id);
+            param.Add("@VILL_NAME", d.vill_name);
+            param.Add("@VILL_TYPE", d.vill_type);
+            param.Add("@VILL_ID2", d.vill_id2);
+            param.Add("@PAUN_GRP", d.paun_grp);
+            param.Add("@PAUN_COST", d.paun_cost);
+            param.Add("@MAD_GRP", d.mad_grp);
+            param.Add("@MAD_COST", d.mad_cost);
+            param.Add("@PAUNMAD_GRP", d.paunmad_grp);
+            param.Add("@PAUNMAD_COST", d.paunmad_cost);
+            param.Add("@PA_GRP", d.pa_grp);
+            param.Add("@PA_COST", d.pa_cost);
+            param.Add("@PAMPH_GRP", d.pamph_grp);
+            param.Add("@PAMPH_COST", d.pamph_cost);
+            param.Add("@TO_GRP", d.to_grp);
+            param.Add("@TO_COST", d.to_cost);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@G_ROYHU", d.g_royhu);
+            param.Add("@G_OUNDAM", d.g_oundam);
+            param.Add("@G_OUNDAM1", d.g_oundam1);
+            param.Add("@G_OUNKAO", d.g_ounkao);
+            param.Add("@G_OUNKAO1", d.g_ounkao1);
+            param.Add("@GS_R", d.gs_r);
+            param.Add("@GS_OD", d.gs_od);
+            param.Add("@GS_OK", d.gs_ok);
+            param.Add("@GRP_TYPE", d.grp_type);
+            param.Add("@OK_TYPE", d.ok_type);
+            param.Add("@A_ROYHU", d.a_royhu);
+            param.Add("@M_ROYHU", d.m_royhu);
+            param.Add("@A_OUNDAM", d.a_oundam);
+            param.Add("@M_OUNDAM", d.m_oundam);
+            param.Add("@A_OUNKAO", d.a_ounkao);
+            param.Add("@M_OUNKAO", d.m_ounkao);
+            param.Add("@A_ROY", d.a_roy);
+            param.Add("@M_ROY", d.m_roy);
+            param.Add("@SPC_TYPE", d.spc_type);
+            param.Add("@RH_FLAG", d.rh_flag);
+            param.Add("@SP_FLAG", d.sp_flag);
+            param.Add("@RP_FLAG", d.rp_flag);
+            param.Add("@PD_FLAG", d.pd_flag);
+            param.Add("@MPH_FLAG", d.mph_flag);
+            param.Add("@OK_FLAG", d.ok_flag);
+            param.Add("@OD_FLAG", d.od_flag);
+            param.Add("@OP_FLAG", d.op_flag);
+            param.Add("@TT_FLAG", d.tt_flag);
+            param.Add("@PP_FLAG", d.pp_flag);
+            param.Add("@R_METHOD", d.r_method);
+            param.Add("@P_METHOD", d.p_method);
+            param.Add("@TYPE", d.type);
+            param.Add("@OD_SPC", d.od_spc);
+            param.Add("@OK_SPC", d.ok_spc);
+            param.Add("@BRANCH", d.branch);
+
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM product.dbo.PDS_VILLAGEEX " +
+            $"WHERE (@VILL_ID IS NULL OR VILL_ID = @VILL_ID) ";
+          /*
+            $"  AND (@VILL_NAME IS NULL OR VILL_NAME = @VILL_NAME) " +
+            $"  AND (@VILL_TYPE IS NULL OR VILL_TYPE = @VILL_TYPE) " +
+            $"  AND (@VILL_ID2 IS NULL OR VILL_ID2 = @VILL_ID2) " +
+            $"  AND (@PAUN_GRP IS NULL OR PAUN_GRP = @PAUN_GRP) " +
+            $"  AND (@PAUN_COST IS NULL OR PAUN_COST = @PAUN_COST) " +
+            $"  AND (@MAD_GRP IS NULL OR MAD_GRP = @MAD_GRP) " +
+            $"  AND (@MAD_COST IS NULL OR MAD_COST = @MAD_COST) " +
+            $"  AND (@PAUNMAD_GRP IS NULL OR PAUNMAD_GRP = @PAUNMAD_GRP) " +
+            $"  AND (@PAUNMAD_COST IS NULL OR PAUNMAD_COST = @PAUNMAD_COST) " +
+            $"  AND (@PA_GRP IS NULL OR PA_GRP = @PA_GRP) " +
+            $"  AND (@PA_COST IS NULL OR PA_COST = @PA_COST) " +
+            $"  AND (@PAMPH_GRP IS NULL OR PAMPH_GRP = @PAMPH_GRP) " +
+            $"  AND (@PAMPH_COST IS NULL OR PAMPH_COST = @PAMPH_COST) " +
+            $"  AND (@TO_GRP IS NULL OR TO_GRP = @TO_GRP) " +
+            $"  AND (@TO_COST IS NULL OR TO_COST = @TO_COST) " +
+            $"  AND (@USER_ID IS NULL OR USER_ID = @USER_ID) " +
+            $"  AND (@USER_DATE IS NULL OR USER_DATE = @USER_DATE) " +
+            $"  AND (@G_ROYHU IS NULL OR G_ROYHU = @G_ROYHU) " +
+            $"  AND (@G_OUNDAM IS NULL OR G_OUNDAM = @G_OUNDAM) " +
+            $"  AND (@G_OUNDAM1 IS NULL OR G_OUNDAM1 = @G_OUNDAM1) " +
+            $"  AND (@G_OUNKAO IS NULL OR G_OUNKAO = @G_OUNKAO) " +
+            $"  AND (@G_OUNKAO1 IS NULL OR G_OUNKAO1 = @G_OUNKAO1) " +
+            $"  AND (@GS_R IS NULL OR GS_R = @GS_R) " +
+            $"  AND (@GS_OD IS NULL OR GS_OD = @GS_OD) " +
+            $"  AND (@GS_OK IS NULL OR GS_OK = @GS_OK) " +
+            $"  AND (@GRP_TYPE IS NULL OR GRP_TYPE = @GRP_TYPE) " +
+            $"  AND (@OK_TYPE IS NULL OR OK_TYPE = @OK_TYPE) " +
+            $"  AND (@A_ROYHU IS NULL OR A_ROYHU = @A_ROYHU) " +
+            $"  AND (@M_ROYHU IS NULL OR M_ROYHU = @M_ROYHU) " +
+            $"  AND (@A_OUNDAM IS NULL OR A_OUNDAM = @A_OUNDAM) " +
+            $"  AND (@M_OUNDAM IS NULL OR M_OUNDAM = @M_OUNDAM) " +
+            $"  AND (@A_OUNKAO IS NULL OR A_OUNKAO = @A_OUNKAO) " +
+            $"  AND (@M_OUNKAO IS NULL OR M_OUNKAO = @M_OUNKAO) " +
+            $"  AND (@A_ROY IS NULL OR A_ROY = @A_ROY) " +
+            $"  AND (@M_ROY IS NULL OR M_ROY = @M_ROY) " +
+            $"  AND (@SPC_TYPE IS NULL OR SPC_TYPE = @SPC_TYPE) " +
+            $"  AND (@RH_FLAG IS NULL OR RH_FLAG = @RH_FLAG) " +
+            $"  AND (@SP_FLAG IS NULL OR SP_FLAG = @SP_FLAG) " +
+            $"  AND (@RP_FLAG IS NULL OR RP_FLAG = @RP_FLAG) " +
+            $"  AND (@PD_FLAG IS NULL OR PD_FLAG = @PD_FLAG) " +
+            $"  AND (@MPH_FLAG IS NULL OR MPH_FLAG = @MPH_FLAG) " +
+            $"  AND (@OK_FLAG IS NULL OR OK_FLAG = @OK_FLAG) " +
+            $"  AND (@OD_FLAG IS NULL OR OD_FLAG = @OD_FLAG) " +
+            $"  AND (@OP_FLAG IS NULL OR OP_FLAG = @OP_FLAG) " +
+            $"  AND (@TT_FLAG IS NULL OR TT_FLAG = @TT_FLAG) " +
+            $"  AND (@PP_FLAG IS NULL OR PP_FLAG = @PP_FLAG) " +
+            $"  AND (@R_METHOD IS NULL OR R_METHOD = @R_METHOD) " +
+            $"  AND (@P_METHOD IS NULL OR P_METHOD = @P_METHOD) " +
+            $"  AND (@TYPE IS NULL OR TYPE = @TYPE) " +
+            $"  AND (@OD_SPC IS NULL OR OD_SPC = @OD_SPC) " +
+            $"  AND (@OK_SPC IS NULL OR OK_SPC = @OK_SPC) " +
+            $"  AND (@BRANCH IS NULL OR BRANCH = @BRANCH) ";
+            //$"AND (VILL_ID LIKE @txtSearch OR VILL_ID LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+          */
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx>(cmd, param).ToList();
+            return res;
+        }
+    }
+}

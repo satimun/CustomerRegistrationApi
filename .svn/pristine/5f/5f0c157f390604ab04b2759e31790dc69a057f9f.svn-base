@@ -1,0 +1,65 @@
+﻿using PDK1Model.Model.Oauth;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Constant
+{
+    public class StaticValue
+    {
+        private List<OauthAccessToken> _OauthAccessToken;
+        public List<OauthAccessToken> OauthAccessToken { get { return _OauthAccessToken; } }
+
+        private List<OauthToken> _OauthToken;
+        public List<OauthToken> OauthToken { get { return _OauthToken; } }
+
+        private List<OauthUser> _OauthUser;
+        public List<OauthUser> OauthUser { get { return _OauthUser; } }
+
+
+        private static StaticValue instant { get; set; }
+        private StaticValue()
+        {
+        }
+
+        public static StaticValue GetInstant()
+        {
+            if (instant == null) instant = new StaticValue();
+            return instant;
+        }
+
+        public void LoadInstantAll()
+        {
+            this.AccessKey();
+            this.TokenKey();
+            this.UserData();
+
+
+        }
+
+        public void AccessKey()
+        {
+            this._OauthAccessToken?.Clear();
+            //  this._OauthAccessToken = OauthAccessTokenAdo.GetInstant().ListActive();
+        }
+
+        public void TokenKey()
+        {
+            this._OauthToken?.Clear();
+            //  this._OauthToken = OauthTokenAdo.GetInstant().ListActive();
+        }
+
+        public void UserData()
+        {
+            this._OauthUser?.Clear();
+            //   this._OauthUser = OauthUserAdo.GetInstant().Search(new OauthUser());
+        }
+
+        public string GetUserDetail(string UserID)
+        {
+            return this.OauthUser.Where(x => x.UserID == UserID).Select(x => x.UserID + " : " + x.UserName).FirstOrDefault();
+        }
+
+    }
+}

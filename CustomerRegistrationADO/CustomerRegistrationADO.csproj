@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>disable</Nullable>
+    <RootNamespace>CustomerRegistrationADO</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.60.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.11" />
+    <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="2.19.100" />
+    <PackageReference Include="System.Data.OleDb" Version="4.7.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\KKFCoreEngine\KKFCoreEngine.csproj" />
+    <ProjectReference Include="..\CustomerRegistrationModel\CustomerRegistrationModel.csproj" />
+    <ProjectReference Include="..\CustomerRegistrationModel\CustomerRegistrationModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Connect\DBase\" />
+    <Folder Include="Connect\Mssql\CRMDB\Function\Table\" />
+    <Folder Include="Connect\Mssql\CRMDB\Procedure\" />
+    <Folder Include="Connect\Mssql\CRMDB\Report\" />
+    <Folder Include="Connect\Mssql\CRMDB\View\" />
+  </ItemGroup>
+
+</Project>

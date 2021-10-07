@@ -1,0 +1,65 @@
+﻿using PDK1Model.Model.Oauth;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Constant
+{
+    public class StaticValue
+    {
+        private List<PDK1Model.Model.Dataset.Mssql.Product.PDT_OauthAccess> _OauthAccessToken;
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDT_OauthAccess> OauthAccessToken { get { return _OauthAccessToken; } }
+
+        private List<PDK1Model.Model.Dataset.Mssql.Product.PDT_OauthSingIn> _OauthToken;
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDT_OauthSingIn> OauthToken { get { return _OauthToken; } }
+
+        private List<PDK1Model.Model.Dataset.Mssql.Product.PDS_User> _OauthUser;
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDS_User> OauthUser { get { return _OauthUser; } }
+
+
+        private static StaticValue instant { get; set; }
+        private StaticValue()
+        {
+        }
+
+        public static StaticValue GetInstant()
+        {
+            if (instant == null) instant = new StaticValue();
+            return instant;
+        }
+
+        public void LoadInstantAll()
+        {
+            this.AccessKey();
+            this.TokenKey();
+            this.UserData();
+
+
+        }
+
+        public void AccessKey()
+        {
+            this._OauthAccessToken?.Clear();
+              this._OauthAccessToken = PDK1ADO.Connect.Mssql.Product.PDT_OauthAccessAdo.GetInstant().ListActive();
+        }
+
+        public void TokenKey()
+        {
+            this._OauthToken?.Clear();
+            this._OauthToken = PDK1ADO.Connect.Mssql.Product.PDT_OauthSingInAdo.GetInstant().ListActive();
+        }
+
+        public void UserData()
+        {
+            this._OauthUser?.Clear();
+           this._OauthUser = PDK1ADO.Connect.Mssql.Product.PDS_UserAdo.GetInstant().GetData(new PDK1Model.Model.Dataset.Mssql.Product.PDS_User());
+        }
+
+        public string GetUserDetail(string UserID)
+        {
+            return this.OauthUser.Where(x => x.USER_ID == UserID).Select(x => x.USER_ID + " : " + x.EMPNAME).FirstOrDefault();
+        }
+
+    }
+}

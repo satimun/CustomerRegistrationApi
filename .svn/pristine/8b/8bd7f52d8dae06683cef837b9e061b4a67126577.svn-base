@@ -1,0 +1,66 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PDK1API.Engine.PDK1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using PDSTDEngine.SendMessage;
+using System.Threading.Tasks;
+ 
+
+namespace PDK1API.Controllers.PDK1
+{
+    [Produces("application/json")]
+    [Route("v1/[controller]")]
+    [ApiController]
+    public class PDS_VillageExController : ControllersBase
+    {
+        [HttpPost("GetData")]
+        public async Task<dynamic> GetData([FromBody] dynamic data)
+        {
+            var res = new PDS_VillageExGetAPI();
+            return await Task.Run(() => ResponeValid(res.Execute(HttpContext, data)));
+        }
+
+        [HttpPost("SendMessage")]
+        public async Task<dynamic> SendMessage([FromBody] dynamic data)
+        {
+            string host;
+            int port = 2399;
+            var aMessage = "";
+
+            try
+            {
+                if (data != null)
+                {
+                   
+
+                    foreach (Newtonsoft.Json.Linq.JProperty item in data)
+                    {
+                        if (item.Name == "Message")//property name
+                            aMessage = item.Value.ToString();
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
+            host = "191.20.201.217";
+            host = "191.20.2.64";
+
+
+            //  string result =
+
+            var result = PDSTDEngine.SendMessage.SendSocket.Send(host, port, aMessage);
+
+            return await Task.Run(() => result);
+        }
+
+       
+    }
+}

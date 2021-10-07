@@ -1,0 +1,61 @@
+﻿using PDK1Model.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Engine.PDK1
+{
+    public class PDK1_M_RunOubGetAPI : EngineBase<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>
+    {
+        public PDK1_M_RunOubGetAPI()
+        {
+            PermissionKey = "ADMIN";
+        }
+
+        protected override void ExecuteChild(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub dataReq, ResponseAPI dataRes)
+        {
+            var res = new List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>();
+            var roles = PDK1ADO.Connect.Mssql.Product.PDK1_M_RunOubAdo.GetInstant().GetData(dataReq);
+
+            foreach (var x in roles)
+            {
+                var tmp = new PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub();
+
+                tmp.brn_code = x.brn_code;
+                tmp.bar_grp = x.bar_grp;
+                tmp.stock = x.stock;
+                tmp.process = x.process;
+                tmp.pronospc = x.pronospc;
+                tmp.mk_lenspc = x.mk_lenspc;
+                tmp.order = x.order;
+                tmp.date = x.date;
+                tmp.oun_date = x.oun_date;
+                tmp.order_tao = x.order_tao;
+                tmp.mach_id = x.mach_id;
+                tmp.item = x.item;
+                tmp.yai_code = x.yai_code;
+                tmp.req_prn = x.req_prn;
+                tmp.amt = x.amt;
+                tmp.amt_tot = x.amt_tot;
+                tmp.dm_id = x.dm_id;
+                tmp.type = x.type;
+                tmp.paw_amt = x.paw_amt;
+                tmp.flag_payed = x.flag_payed;
+                tmp.paw_item = x.paw_item;
+                tmp.prn_date = x.prn_date;
+                tmp.prn_item = x.prn_item;
+                tmp.bar_bill = x.bar_bill;
+                tmp.clear_flag = x.clear_flag;
+                tmp.tran_flag = x.tran_flag;
+                tmp.stress = x.stress;
+                tmp.len_grp = x.len_grp;
+                tmp.prb_code = x.prb_code;
+
+                res.Add(tmp);
+            }
+
+            dataRes.data = res;
+        }
+    }
+}

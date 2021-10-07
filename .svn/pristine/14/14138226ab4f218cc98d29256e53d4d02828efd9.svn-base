@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <Folder Include="Model\Dataset\DBase\Product\" />
+    <Folder Include="Model\Dataset\Oracle\HrmsV10\" />
+    <Folder Include="Model\Request\" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\KKFCoreEngine\KKFCoreEngine.csproj" />
+  </ItemGroup>
+
+</Project>

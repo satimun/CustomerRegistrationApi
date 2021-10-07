@@ -1,0 +1,507 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using KKFCoreEngine.Util;
+
+namespace PDK1ADO.Connect.Mssql.Product
+{
+    public class PDK1_M_RunOubAdo:ProductBase
+    {
+        
+        private static PDK1_M_RunOubAdo instant;
+
+        public static PDK1_M_RunOubAdo GetInstant()
+        {
+            if (instant == null) instant = new PDK1_M_RunOubAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private PDK1_M_RunOubAdo() {}
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub> ListActive()
+        {
+            string cmd = " SELECT * FROM product.dbo.PDK1_M_RunOub ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub> GetData(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            /*  param.Add("@BRN_CODE", d.brn_code);
+              param.Add("@bar_grp", d.bar_grp);
+              param.Add("@stock", d.stock);
+              param.Add("@process", d.process);
+              param.Add("@pronospc", d.pronospc);
+              param.Add("@mk_lenspc", d.mk_lenspc);
+              param.Add("@order", d.order);
+              param.Add("@date", d.date);
+              param.Add("@oun_date", d.oun_date);
+              param.Add("@order_tao", d.order_tao);
+              param.Add("@mach_id", d.mach_id);
+              param.Add("@item", d.item);
+              param.Add("@yai_code", d.yai_code);
+              param.Add("@req_prn", d.req_prn);
+              param.Add("@amt", d.amt);
+              param.Add("@amt_tot", d.amt_tot);
+              param.Add("@dm_id", d.dm_id);
+              param.Add("@type", d.type);
+              param.Add("@paw_amt", d.paw_amt);
+              param.Add("@flag_payed", d.flag_payed);
+              param.Add("@paw_item", d.paw_item);
+              param.Add("@prn_date", d.prn_date);
+              param.Add("@prn_item", d.prn_item);
+              param.Add("@bar_bill", d.bar_bill);
+              param.Add("@clear_flag", d.clear_flag);
+              param.Add("@tran_flag", d.tran_flag);
+              param.Add("@stress", d.stress);
+              param.Add("@len_grp", d.len_grp);
+              param.Add("@prb_code", d.prb_code);*/
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@date1", d.date1);
+            param.Add("@date2", d.date2);
+            param.Add("@stock", d.stock);
+            param.Add("@bar_grp", d.barcode);
+            param.Add("@order", d.order);
+
+
+            string cmd = "SELECT * FROM product.dbo.PDK1_M_RunOub " +
+             $" WHERE 1=1    ";
+            if ((d.brn_code != null) && (d.brn_code != ""))
+            {
+                cmd += "  AND (@BRN_CODE IS NULL OR BRN_CODE = @BRN_CODE) ";
+            }
+            if ((d.date1 != null))
+            {
+                cmd += "  AND (@date1 IS NULL OR date >= @date1) ";
+            }
+            if ((d.date2 != null))
+            {
+                cmd += "  AND (@date2 IS NULL OR date <= @date2) ";
+            }
+            if ((d.stock != ""))
+            {
+                cmd += "  AND (stock = @stock) ";
+            }
+            if ((d.order != ""))
+            {
+                cmd += "  AND ([order] = @order) ";
+            }
+            if ((d.barcode != ""))
+            {
+                cmd += "  AND ( (bar_grp = @bar_grp) OR (bar_grp = (select top 1 bar_grp from product.dbo.PDK1_M_RunOus where barcode = @bar_grp) ) )";
+            }
+
+
+            /*
+            $"  AND (@stock IS NULL OR stock = @stock) " +
+            $"  AND (@process IS NULL OR process = @process) " +
+            $"  AND (@pronospc IS NULL OR pronospc = @pronospc) " +
+            $"  AND (@mk_lenspc IS NULL OR mk_lenspc = @mk_lenspc) " +
+            $"  AND (@order IS NULL OR order = @order) " +
+            $"  AND (@date IS NULL OR date = @date) " +
+            $"  AND (@oun_date IS NULL OR oun_date = @oun_date) " +
+            $"  AND (@order_tao IS NULL OR order_tao = @order_tao) " +
+            $"  AND (@mach_id IS NULL OR mach_id = @mach_id) " +
+            $"  AND (@item IS NULL OR item = @item) " +
+            $"  AND (@yai_code IS NULL OR yai_code = @yai_code) " +
+            $"  AND (@req_prn IS NULL OR req_prn = @req_prn) " +
+            $"  AND (@amt IS NULL OR amt = @amt) " +
+            $"  AND (@amt_tot IS NULL OR amt_tot = @amt_tot) " +
+            $"  AND (@dm_id IS NULL OR dm_id = @dm_id) " +
+            $"  AND (@type IS NULL OR type = @type) " +
+            $"  AND (@paw_amt IS NULL OR paw_amt = @paw_amt) " +
+            $"  AND (@flag_payed IS NULL OR flag_payed = @flag_payed) " +
+            $"  AND (@paw_item IS NULL OR paw_item = @paw_item) " +
+            $"  AND (@prn_date IS NULL OR prn_date = @prn_date) " +
+            $"  AND (@prn_item IS NULL OR prn_item = @prn_item) " +
+            $"  AND (@bar_bill IS NULL OR bar_bill = @bar_bill) " +
+            $"  AND (@clear_flag IS NULL OR clear_flag = @clear_flag) " +
+            $"  AND (@tran_flag IS NULL OR tran_flag = @tran_flag) " +
+            $"  AND (@stress IS NULL OR stress = @stress) " +
+            $"  AND (@len_grp IS NULL OR len_grp = @len_grp) " +
+            $"  AND (@prb_code IS NULL OR prb_code = @prb_code) ";*/
+            //$"AND (BRN_CODE LIKE @txtSearch OR BRN_CODE LIKE @txtSearch) " +  */
+            //"ORDER BY  ;"; 
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>(cmd, param).ToList();
+            return res;
+            /*
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@bar_grp", d.bar_grp);
+            param.Add("@stock", d.stock);
+            param.Add("@process", d.process);
+            param.Add("@pronospc", d.pronospc);
+            param.Add("@mk_lenspc", d.mk_lenspc);
+            param.Add("@order", d.order);
+            param.Add("@date", d.date);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@order_tao", d.order_tao);
+            param.Add("@mach_id", d.mach_id);
+            param.Add("@item", d.item);
+            param.Add("@yai_code", d.yai_code);
+            param.Add("@req_prn", d.req_prn);
+            param.Add("@amt", d.amt);
+            param.Add("@amt_tot", d.amt_tot);
+            param.Add("@dm_id", d.dm_id);
+            param.Add("@type", d.type);
+            param.Add("@paw_amt", d.paw_amt);
+            param.Add("@flag_payed", d.flag_payed);
+            param.Add("@paw_item", d.paw_item);
+            param.Add("@prn_date", d.prn_date);
+            param.Add("@prn_item", d.prn_item);
+            param.Add("@bar_bill", d.bar_bill);
+            param.Add("@clear_flag", d.clear_flag);
+            param.Add("@tran_flag", d.tran_flag);
+            param.Add("@stress", d.stress);
+            param.Add("@len_grp", d.len_grp);
+            param.Add("@prb_code", d.prb_code);
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM product.dbo.PDK1_M_RunOub " +
+            $"WHERE (@BRN_CODE IS NULL OR BRN_CODE = @BRN_CODE) " +
+            $"  AND (@bar_grp IS NULL OR bar_grp = @bar_grp) " +
+            $"  AND (@stock IS NULL OR stock = @stock) " +
+            $"  AND (@process IS NULL OR process = @process) " +
+            $"  AND (@pronospc IS NULL OR pronospc = @pronospc) " +
+            $"  AND (@mk_lenspc IS NULL OR mk_lenspc = @mk_lenspc) " +
+            $"  AND (@order IS NULL OR order = @order) " +
+            $"  AND (@date IS NULL OR date = @date) " +
+            $"  AND (@oun_date IS NULL OR oun_date = @oun_date) " +
+            $"  AND (@order_tao IS NULL OR order_tao = @order_tao) " +
+            $"  AND (@mach_id IS NULL OR mach_id = @mach_id) " +
+            $"  AND (@item IS NULL OR item = @item) " +
+            $"  AND (@yai_code IS NULL OR yai_code = @yai_code) " +
+            $"  AND (@req_prn IS NULL OR req_prn = @req_prn) " +
+            $"  AND (@amt IS NULL OR amt = @amt) " +
+            $"  AND (@amt_tot IS NULL OR amt_tot = @amt_tot) " +
+            $"  AND (@dm_id IS NULL OR dm_id = @dm_id) " +
+            $"  AND (@type IS NULL OR type = @type) " +
+            $"  AND (@paw_amt IS NULL OR paw_amt = @paw_amt) " +
+            $"  AND (@flag_payed IS NULL OR flag_payed = @flag_payed) " +
+            $"  AND (@paw_item IS NULL OR paw_item = @paw_item) " +
+            $"  AND (@prn_date IS NULL OR prn_date = @prn_date) " +
+            $"  AND (@prn_item IS NULL OR prn_item = @prn_item) " +
+            $"  AND (@bar_bill IS NULL OR bar_bill = @bar_bill) " +
+            $"  AND (@clear_flag IS NULL OR clear_flag = @clear_flag) " +
+            $"  AND (@tran_flag IS NULL OR tran_flag = @tran_flag) " +
+            $"  AND (@stress IS NULL OR stress = @stress) " +
+            $"  AND (@len_grp IS NULL OR len_grp = @len_grp) " +
+            $"  AND (@prb_code IS NULL OR prb_code = @prb_code) ";
+            //$"AND (BRN_CODE LIKE @txtSearch OR BRN_CODE LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>(cmd, param).ToList();
+            return res;
+            */
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub> Search(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub  d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            /*
+            param.Add("@BRN_CODEIsNull", d.BRN_CODE.ListNull()); 
+            param.Add("@bar_grpIsNull", d.bar_grp.ListNull()); 
+            param.Add("@stockIsNull", d.stock.ListNull()); 
+            param.Add("@processIsNull", d.process.ListNull()); 
+            param.Add("@pronospcIsNull", d.pronospc.ListNull()); 
+            param.Add("@mk_lenspcIsNull", d.mk_lenspc.ListNull()); 
+            param.Add("@orderIsNull", d.order.ListNull()); 
+            param.Add("@dateIsNull", d.date.ListNull()); 
+            param.Add("@oun_dateIsNull", d.oun_date.ListNull()); 
+            param.Add("@order_taoIsNull", d.order_tao.ListNull()); 
+            param.Add("@mach_idIsNull", d.mach_id.ListNull()); 
+            param.Add("@itemIsNull", d.item.ListNull()); 
+            param.Add("@yai_codeIsNull", d.yai_code.ListNull()); 
+            param.Add("@req_prnIsNull", d.req_prn.ListNull()); 
+            param.Add("@amtIsNull", d.amt.ListNull()); 
+            param.Add("@amt_totIsNull", d.amt_tot.ListNull()); 
+            param.Add("@dm_idIsNull", d.dm_id.ListNull()); 
+            param.Add("@typeIsNull", d.type.ListNull()); 
+            param.Add("@paw_amtIsNull", d.paw_amt.ListNull()); 
+            param.Add("@flag_payedIsNull", d.flag_payed.ListNull()); 
+            param.Add("@paw_itemIsNull", d.paw_item.ListNull()); 
+            param.Add("@prn_dateIsNull", d.prn_date.ListNull()); 
+            param.Add("@prn_itemIsNull", d.prn_item.ListNull()); 
+            param.Add("@bar_billIsNull", d.bar_bill.ListNull()); 
+            param.Add("@clear_flagIsNull", d.clear_flag.ListNull()); 
+            param.Add("@tran_flagIsNull", d.tran_flag.ListNull()); 
+            param.Add("@stressIsNull", d.stress.ListNull()); 
+            param.Add("@len_grpIsNull", d.len_grp.ListNull()); 
+            param.Add("@prb_codeIsNull", d.prb_code.ListNull()); 
+            param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+            */
+
+            string cmd = "";
+            /*
+            string cmd = "SELECT * FROM product.dbo.PDK1_M_RunOub " +
+            $"WHERE (@BRN_CODEIsNull IS NULL OR BRN_CODE IN ('{ d.BRN_CODE.Join("','") }')) " +
+            $"AND (@bar_grpIsNull IS NULL OR bar_grp IN ('{ d.bar_grp.Join("','") }')) " +
+            $"AND (@stockIsNull IS NULL OR stock IN ('{ d.stock.Join("','") }')) " +
+            $"AND (@processIsNull IS NULL OR process IN ('{ d.process.Join("','") }')) " +
+            $"AND (@pronospcIsNull IS NULL OR pronospc IN ('{ d.pronospc.Join("','") }')) " +
+            $"AND (@mk_lenspcIsNull IS NULL OR mk_lenspc IN ('{ d.mk_lenspc.Join("','") }')) " +
+            $"AND (@orderIsNull IS NULL OR order IN ('{ d.order.Join("','") }')) " +
+            $"AND (@dateIsNull IS NULL OR date IN ('{ d.date.Join("','") }')) " +
+            $"AND (@oun_dateIsNull IS NULL OR oun_date IN ('{ d.oun_date.Join("','") }')) " +
+            $"AND (@order_taoIsNull IS NULL OR order_tao IN ('{ d.order_tao.Join("','") }')) " +
+            $"AND (@mach_idIsNull IS NULL OR mach_id IN ('{ d.mach_id.Join("','") }')) " +
+            $"AND (@itemIsNull IS NULL OR item IN ('{ d.item.Join("','") }')) " +
+            $"AND (@yai_codeIsNull IS NULL OR yai_code IN ('{ d.yai_code.Join("','") }')) " +
+            $"AND (@req_prnIsNull IS NULL OR req_prn IN ('{ d.req_prn.Join("','") }')) " +
+            $"AND (@amtIsNull IS NULL OR amt IN ('{ d.amt.Join("','") }')) " +
+            $"AND (@amt_totIsNull IS NULL OR amt_tot IN ('{ d.amt_tot.Join("','") }')) " +
+            $"AND (@dm_idIsNull IS NULL OR dm_id IN ('{ d.dm_id.Join("','") }')) " +
+            $"AND (@typeIsNull IS NULL OR type IN ('{ d.type.Join("','") }')) " +
+            $"AND (@paw_amtIsNull IS NULL OR paw_amt IN ('{ d.paw_amt.Join("','") }')) " +
+            $"AND (@flag_payedIsNull IS NULL OR flag_payed IN ('{ d.flag_payed.Join("','") }')) " +
+            $"AND (@paw_itemIsNull IS NULL OR paw_item IN ('{ d.paw_item.Join("','") }')) " +
+            $"AND (@prn_dateIsNull IS NULL OR prn_date IN ('{ d.prn_date.Join("','") }')) " +
+            $"AND (@prn_itemIsNull IS NULL OR prn_item IN ('{ d.prn_item.Join("','") }')) " +
+            $"AND (@bar_billIsNull IS NULL OR bar_bill IN ('{ d.bar_bill.Join("','") }')) " +
+            $"AND (@clear_flagIsNull IS NULL OR clear_flag IN ('{ d.clear_flag.Join("','") }')) " +
+            $"AND (@tran_flagIsNull IS NULL OR tran_flag IN ('{ d.tran_flag.Join("','") }')) " +
+            $"AND (@stressIsNull IS NULL OR stress IN ('{ d.stress.Join("','") }')) " +
+            $"AND (@len_grpIsNull IS NULL OR len_grp IN ('{ d.len_grp.Join("','") }')) " +
+            $"AND (@prb_codeIsNull IS NULL OR prb_code IN ('{ d.prb_code.Join("','") }')) " +
+            $"AND (BRN_CODE LIKE @txtSearch OR BRN_CODE LIKE @txtSearch) " ;  
+            //"ORDER BY  ;"; 
+            */
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub>(cmd, param).ToList();
+            return res;
+        }
+
+        public int Insert(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@bar_grp", d.bar_grp);
+            param.Add("@stock", d.stock);
+            param.Add("@process", d.process);
+            param.Add("@pronospc", d.pronospc);
+            param.Add("@mk_lenspc", d.mk_lenspc);
+            param.Add("@order", d.order);
+            param.Add("@date", d.date);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@order_tao", d.order_tao);
+            param.Add("@mach_id", d.mach_id);
+            param.Add("@item", d.item);
+            param.Add("@yai_code", d.yai_code);
+            param.Add("@req_prn", d.req_prn);
+            param.Add("@amt", d.amt);
+            param.Add("@amt_tot", d.amt_tot);
+            param.Add("@dm_id", d.dm_id);
+            param.Add("@type", d.type);
+            param.Add("@paw_amt", d.paw_amt);
+            param.Add("@flag_payed", d.flag_payed);
+            param.Add("@paw_item", d.paw_item);
+            param.Add("@prn_date", d.prn_date);
+            param.Add("@prn_item", d.prn_item);
+            param.Add("@bar_bill", d.bar_bill);
+            param.Add("@clear_flag", d.clear_flag);
+            param.Add("@tran_flag", d.tran_flag);
+            param.Add("@stress", d.stress);
+            param.Add("@len_grp", d.len_grp);
+            param.Add("@prb_code", d.prb_code);
+            string cmd = "INSERT INTO product.dbo.PDK1_M_RunOub " +
+            $"      (BRN_CODE, bar_grp, stock, process, pronospc, mk_lenspc, order, date, oun_date, order_tao, mach_id, item, yai_code, req_prn, amt, amt_tot, dm_id, type, paw_amt, flag_payed, paw_item, prn_date, prn_item, bar_bill, clear_flag, tran_flag, stress, len_grp, prb_code) " +
+            $"VALUES(@BRN_CODE, @bar_grp, @stock, @process, @pronospc, @mk_lenspc, @order, @date, @oun_date, @order_tao, @mach_id, @item, @yai_code, @req_prn, @amt, @amt_tot, @dm_id, @type, @paw_amt, @flag_payed, @paw_item, @prn_date, @prn_item, @bar_bill, @clear_flag, @tran_flag, @stress, @len_grp, @prb_code); " +
+            $"SELECT SCOPE_IDENTITY();";
+            return ExecuteScalar<int>(cmd, param);
+        }
+
+        public int Update(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@BRN_CODE", d.brn_code.GetValue());
+            param.Add("@bar_grp", d.bar_grp.GetValue());
+            param.Add("@stock", d.stock.GetValue());
+            param.Add("@process", d.process.GetValue());
+            param.Add("@pronospc", d.pronospc.GetValue());
+            param.Add("@mk_lenspc", d.mk_lenspc.GetValue());
+            param.Add("@order", d.order.GetValue());
+            param.Add("@date", d.date);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@order_tao", d.order_tao.GetValue());
+            param.Add("@mach_id", d.mach_id.GetValue());
+            param.Add("@item", d.item);
+            param.Add("@yai_code", d.yai_code.GetValue());
+            param.Add("@req_prn", d.req_prn);
+            param.Add("@amt", d.amt);
+            param.Add("@amt_tot", d.amt_tot);
+            param.Add("@dm_id", d.dm_id.GetValue());
+            param.Add("@type", d.type.GetValue());
+            param.Add("@paw_amt", d.paw_amt);
+            param.Add("@flag_payed", d.flag_payed.GetValue());
+            param.Add("@paw_item", d.paw_item);
+            param.Add("@prn_date", d.prn_date);
+            param.Add("@prn_item", d.prn_item.GetValue());
+            param.Add("@bar_bill", d.bar_bill.GetValue());
+            param.Add("@clear_flag", d.clear_flag.GetValue());
+            param.Add("@tran_flag", d.tran_flag.GetValue());
+            param.Add("@stress", d.stress.GetValue());
+            param.Add("@len_grp", d.len_grp);
+            param.Add("@prb_code", d.prb_code.GetValue());
+            string cmd = "";
+            /*
+                   cmd = UPDATE product.dbo.PDK1_M_RunOub "+
+            "SET BRN_CODE = @BRN_CODE "+ 
+            " , bar_grp = @bar_grp "+ 
+            " , stock = @stock "+ 
+            " , process = @process "+ 
+            " , pronospc = @pronospc "+ 
+            " , mk_lenspc = @mk_lenspc "+ 
+            " , order = @order "+ 
+            " , date = @date "+ 
+            " , oun_date = @oun_date "+ 
+            " , order_tao = @order_tao "+ 
+            " , mach_id = @mach_id "+ 
+            " , item = @item "+ 
+            " , yai_code = @yai_code "+ 
+            " , req_prn = @req_prn "+ 
+            " , amt = @amt "+ 
+            " , amt_tot = @amt_tot "+ 
+            " , dm_id = @dm_id "+ 
+            " , type = @type "+ 
+            " , paw_amt = @paw_amt "+ 
+            " , flag_payed = @flag_payed "+ 
+            " , paw_item = @paw_item "+ 
+            " , prn_date = @prn_date "+ 
+            " , prn_item = @prn_item "+ 
+            " , bar_bill = @bar_bill "+ 
+            " , clear_flag = @clear_flag "+ 
+            " , tran_flag = @tran_flag "+ 
+            " , stress = @stress "+ 
+            " , len_grp = @len_grp "+ 
+            " , prb_code = @prb_code "+ 
+            "WHERE BRN_CODE = @BRN_CODE "+ 
+            " AND bar_grp = @bar_grp "+ 
+            " AND stock = @stock "+ 
+            " AND process = @process "+ 
+            " AND pronospc = @pronospc "+ 
+            " AND mk_lenspc = @mk_lenspc "+ 
+            " AND order = @order "+ 
+            " AND date = @date "+ 
+            " AND oun_date = @oun_date "+ 
+            " AND order_tao = @order_tao "+ 
+            " AND mach_id = @mach_id "+ 
+            " AND item = @item "+ 
+            " AND yai_code = @yai_code "+ 
+            " AND req_prn = @req_prn "+ 
+            " AND amt = @amt "+ 
+            " AND amt_tot = @amt_tot "+ 
+            " AND dm_id = @dm_id "+ 
+            " AND type = @type "+ 
+            " AND paw_amt = @paw_amt "+ 
+            " AND flag_payed = @flag_payed "+ 
+            " AND paw_item = @paw_item "+ 
+            " AND prn_date = @prn_date "+ 
+            " AND prn_item = @prn_item "+ 
+            " AND bar_bill = @bar_bill "+ 
+            " AND clear_flag = @clear_flag "+ 
+            " AND tran_flag = @tran_flag "+ 
+            " AND stress = @stress "+ 
+            " AND len_grp = @len_grp "+ 
+            " AND prb_code = @prb_code "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+        public int Delete(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOub d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@BRN_CODE", d.brn_code.GetValue());
+            param.Add("@bar_grp", d.bar_grp.GetValue());
+            param.Add("@stock", d.stock.GetValue());
+            param.Add("@process", d.process.GetValue());
+            param.Add("@pronospc", d.pronospc.GetValue());
+            param.Add("@mk_lenspc", d.mk_lenspc.GetValue());
+            param.Add("@order", d.order.GetValue());
+            param.Add("@date", d.date);
+            param.Add("@oun_date", d.oun_date);
+            param.Add("@order_tao", d.order_tao.GetValue());
+            param.Add("@mach_id", d.mach_id.GetValue());
+            param.Add("@item", d.item);
+            param.Add("@yai_code", d.yai_code.GetValue());
+            param.Add("@req_prn", d.req_prn);
+            param.Add("@amt", d.amt);
+            param.Add("@amt_tot", d.amt_tot);
+            param.Add("@dm_id", d.dm_id.GetValue());
+            param.Add("@type", d.type.GetValue());
+            param.Add("@paw_amt", d.paw_amt);
+            param.Add("@flag_payed", d.flag_payed.GetValue());
+            param.Add("@paw_item", d.paw_item);
+            param.Add("@prn_date", d.prn_date);
+            param.Add("@prn_item", d.prn_item.GetValue());
+            param.Add("@bar_bill", d.bar_bill.GetValue());
+            param.Add("@clear_flag", d.clear_flag.GetValue());
+            param.Add("@tran_flag", d.tran_flag.GetValue());
+            param.Add("@stress", d.stress.GetValue());
+            param.Add("@len_grp", d.len_grp);
+            param.Add("@prb_code", d.prb_code.GetValue());
+            string cmd = "";
+            /*
+                   cmd = DELETE FROM product.dbo.PDK1_M_RunOub "+
+            "WHERE BRN_CODE = @BRN_CODE "+ 
+            " AND bar_grp = @bar_grp "+ 
+            " AND stock = @stock "+ 
+            " AND process = @process "+ 
+            " AND pronospc = @pronospc "+ 
+            " AND mk_lenspc = @mk_lenspc "+ 
+            " AND order = @order "+ 
+            " AND date = @date "+ 
+            " AND oun_date = @oun_date "+ 
+            " AND order_tao = @order_tao "+ 
+            " AND mach_id = @mach_id "+ 
+            " AND item = @item "+ 
+            " AND yai_code = @yai_code "+ 
+            " AND req_prn = @req_prn "+ 
+            " AND amt = @amt "+ 
+            " AND amt_tot = @amt_tot "+ 
+            " AND dm_id = @dm_id "+ 
+            " AND type = @type "+ 
+            " AND paw_amt = @paw_amt "+ 
+            " AND flag_payed = @flag_payed "+ 
+            " AND paw_item = @paw_item "+ 
+            " AND prn_date = @prn_date "+ 
+            " AND prn_item = @prn_item "+ 
+            " AND bar_bill = @bar_bill "+ 
+            " AND clear_flag = @clear_flag "+ 
+            " AND tran_flag = @tran_flag "+ 
+            " AND stress = @stress "+ 
+            " AND len_grp = @len_grp "+ 
+            " AND prb_code = @prb_code "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+         
+    }
+
+
+
+
+
+
+
+
+
+
+
+ 
+}

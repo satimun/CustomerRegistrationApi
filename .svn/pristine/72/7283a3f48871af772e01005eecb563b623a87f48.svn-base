@@ -1,0 +1,573 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using KKFCoreEngine.Util;
+
+namespace PDK1ADO.Connect.Mssql.Product
+{
+    public class PDK1_T_R_OunDam_HAdo : ProductBase
+    {
+        private static PDK1_T_R_OunDam_HAdo instant;
+
+        public static PDK1_T_R_OunDam_HAdo GetInstant()
+        {
+            if (instant == null) instant = new PDK1_T_R_OunDam_HAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private PDK1_T_R_OunDam_HAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H> ListActive()
+        {
+            string cmd = " SELECT * FROM product.dbo.PDK1_T_R_OunDam_H ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H> GetData(PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@SEQUENCE", d.sequence);
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@DATE", d.date);
+            param.Add("@RES_ID", d.res_id);
+            param.Add("@PAY_DATE", d.pay_date);
+            param.Add("@TYPE", d.type);
+            param.Add("@PRC_NEXT", d.prc_next);
+            param.Add("@PAY_ITEM", d.pay_item);
+            param.Add("@MACH_ID", d.mach_id);
+            param.Add("@STOCK", d.stock);
+            param.Add("@REC_QUAN", d.rec_quan);
+            param.Add("@REC_WEI", d.rec_wei);
+            param.Add("@U_PRICE", d.u_price);
+            param.Add("@T_PRICE", d.t_price);
+            param.Add("@S_PRICE", d.s_price);
+            param.Add("@BILL_NO", d.bill_no);
+            param.Add("@STAFF", d.staff);
+            param.Add("@PAY_QUAN", d.pay_quan);
+            param.Add("@PAY_WEI", d.pay_wei);
+            param.Add("@CHK", d.chk);
+            param.Add("@YAI", d.yai);
+            param.Add("@PRN_FLAG", d.prn_flag);
+            param.Add("@P_FLAG", d.p_flag);
+            param.Add("@EDIT_FLAG", d.edit_flag);
+            param.Add("@BARCODE", d.barcode);
+            param.Add("@WEI_FLAG", d.wei_flag);
+            param.Add("@REC_FLAG", d.rec_flag);
+            param.Add("@REC_QTY", d.rec_qty);
+            param.Add("@REC_BAD", d.rec_bad);
+            param.Add("@TRAN_FLAG", d.tran_flag);
+            param.Add("@BC_OK", d.bc_ok);
+            param.Add("@BRANCH", d.branch);
+            param.Add("@GROUP", d.group);
+            param.Add("@BAR_GRP", d.bar_grp);
+            param.Add("@TRAN_CY", d.tran_cy);
+            param.Add("@ORDER", d.order);
+            param.Add("@ORDER_NO", d.order_no);
+            param.Add("@FROM_TYPE", d.from_type);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@BCGRP", d.bcgrp);
+            param.Add("@STAFF_NAME", d.staff_name);
+            param.Add("@RES_NAME", d.res_name);
+            param.Add("@BCSTAMP", d.bcstamp);
+            param.Add("@ROUND_NO", d.round_no);
+            param.Add("@REC_LOST", d.rec_lost);
+            param.Add("@DOC_NO", d.doc_no);
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM product.dbo.PDK1_T_R_OunDam_H " +
+            $"WHERE (@SEQUENCE IS NULL OR SEQUENCE = @SEQUENCE) " +
+            $"  AND (@BRN_CODE IS NULL OR BRN_CODE = @BRN_CODE) " +
+            $"  AND (@DATE IS NULL OR DATE = @DATE) " +
+            $"  AND (@RES_ID IS NULL OR RES_ID = @RES_ID) " +
+            $"  AND (@PAY_DATE IS NULL OR PAY_DATE = @PAY_DATE) " +
+            $"  AND (@TYPE IS NULL OR TYPE = @TYPE) " +
+            $"  AND (@PRC_NEXT IS NULL OR PRC_NEXT = @PRC_NEXT) " +
+            $"  AND (@PAY_ITEM IS NULL OR PAY_ITEM = @PAY_ITEM) " +
+            $"  AND (@MACH_ID IS NULL OR MACH_ID = @MACH_ID) " +
+            $"  AND (@STOCK IS NULL OR STOCK = @STOCK) " +
+            $"  AND (@REC_QUAN IS NULL OR REC_QUAN = @REC_QUAN) " +
+            $"  AND (@REC_WEI IS NULL OR REC_WEI = @REC_WEI) " +
+            $"  AND (@U_PRICE IS NULL OR U_PRICE = @U_PRICE) " +
+            $"  AND (@T_PRICE IS NULL OR T_PRICE = @T_PRICE) " +
+            $"  AND (@S_PRICE IS NULL OR S_PRICE = @S_PRICE) " +
+            $"  AND (@BILL_NO IS NULL OR BILL_NO = @BILL_NO) " +
+            $"  AND (@STAFF IS NULL OR STAFF = @STAFF) " +
+            $"  AND (@PAY_QUAN IS NULL OR PAY_QUAN = @PAY_QUAN) " +
+            $"  AND (@PAY_WEI IS NULL OR PAY_WEI = @PAY_WEI) " +
+            $"  AND (@CHK IS NULL OR CHK = @CHK) " +
+            $"  AND (@YAI IS NULL OR YAI = @YAI) " +
+            $"  AND (@PRN_FLAG IS NULL OR PRN_FLAG = @PRN_FLAG) " +
+            $"  AND (@P_FLAG IS NULL OR P_FLAG = @P_FLAG) " +
+            $"  AND (@EDIT_FLAG IS NULL OR EDIT_FLAG = @EDIT_FLAG) " +
+            $"  AND (@BARCODE IS NULL OR BARCODE = @BARCODE) " +
+            $"  AND (@WEI_FLAG IS NULL OR WEI_FLAG = @WEI_FLAG) " +
+            $"  AND (@REC_FLAG IS NULL OR REC_FLAG = @REC_FLAG) " +
+            $"  AND (@REC_QTY IS NULL OR REC_QTY = @REC_QTY) " +
+            $"  AND (@REC_BAD IS NULL OR REC_BAD = @REC_BAD) " +
+            $"  AND (@TRAN_FLAG IS NULL OR TRAN_FLAG = @TRAN_FLAG) " +
+            $"  AND (@BC_OK IS NULL OR BC_OK = @BC_OK) " +
+            $"  AND (@BRANCH IS NULL OR BRANCH = @BRANCH) " +
+            $"  AND (@GROUP IS NULL OR GROUP = @GROUP) " +
+            $"  AND (@BAR_GRP IS NULL OR BAR_GRP = @BAR_GRP) " +
+            $"  AND (@TRAN_CY IS NULL OR TRAN_CY = @TRAN_CY) " +
+            $"  AND (@ORDER IS NULL OR ORDER = @ORDER) " +
+            $"  AND (@ORDER_NO IS NULL OR ORDER_NO = @ORDER_NO) " +
+            $"  AND (@FROM_TYPE IS NULL OR FROM_TYPE = @FROM_TYPE) " +
+            $"  AND (@USER_ID IS NULL OR USER_ID = @USER_ID) " +
+            $"  AND (@USER_DATE IS NULL OR USER_DATE = @USER_DATE) " +
+            $"  AND (@BCGRP IS NULL OR BCGRP = @BCGRP) " +
+            $"  AND (@STAFF_NAME IS NULL OR STAFF_NAME = @STAFF_NAME) " +
+            $"  AND (@RES_NAME IS NULL OR RES_NAME = @RES_NAME) " +
+            $"  AND (@BCSTAMP IS NULL OR BCSTAMP = @BCSTAMP) " +
+            $"  AND (@ROUND_NO IS NULL OR ROUND_NO = @ROUND_NO) " +
+            $"  AND (@REC_LOST IS NULL OR REC_LOST = @REC_LOST) " +
+            $"  AND (@DOC_NO IS NULL OR DOC_NO = @DOC_NO) ";
+            //$"AND (SEQUENCE LIKE @txtSearch OR SEQUENCE LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H>(cmd, param).ToList();
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H> Search(PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            /*
+            param.Add("@SEQUENCEIsNull", d.SEQUENCE.ListNull()); 
+            param.Add("@BRN_CODEIsNull", d.BRN_CODE.ListNull()); 
+            param.Add("@DATEIsNull", d.DATE.ListNull()); 
+            param.Add("@RES_IDIsNull", d.RES_ID.ListNull()); 
+            param.Add("@PAY_DATEIsNull", d.PAY_DATE.ListNull()); 
+            param.Add("@TYPEIsNull", d.TYPE.ListNull()); 
+            param.Add("@PRC_NEXTIsNull", d.PRC_NEXT.ListNull()); 
+            param.Add("@PAY_ITEMIsNull", d.PAY_ITEM.ListNull()); 
+            param.Add("@MACH_IDIsNull", d.MACH_ID.ListNull()); 
+            param.Add("@STOCKIsNull", d.STOCK.ListNull()); 
+            param.Add("@REC_QUANIsNull", d.REC_QUAN.ListNull()); 
+            param.Add("@REC_WEIIsNull", d.REC_WEI.ListNull()); 
+            param.Add("@U_PRICEIsNull", d.U_PRICE.ListNull()); 
+            param.Add("@T_PRICEIsNull", d.T_PRICE.ListNull()); 
+            param.Add("@S_PRICEIsNull", d.S_PRICE.ListNull()); 
+            param.Add("@BILL_NOIsNull", d.BILL_NO.ListNull()); 
+            param.Add("@STAFFIsNull", d.STAFF.ListNull()); 
+            param.Add("@PAY_QUANIsNull", d.PAY_QUAN.ListNull()); 
+            param.Add("@PAY_WEIIsNull", d.PAY_WEI.ListNull()); 
+            param.Add("@CHKIsNull", d.CHK.ListNull()); 
+            param.Add("@YAIIsNull", d.YAI.ListNull()); 
+            param.Add("@PRN_FLAGIsNull", d.PRN_FLAG.ListNull()); 
+            param.Add("@P_FLAGIsNull", d.P_FLAG.ListNull()); 
+            param.Add("@EDIT_FLAGIsNull", d.EDIT_FLAG.ListNull()); 
+            param.Add("@BARCODEIsNull", d.BARCODE.ListNull()); 
+            param.Add("@WEI_FLAGIsNull", d.WEI_FLAG.ListNull()); 
+            param.Add("@REC_FLAGIsNull", d.REC_FLAG.ListNull()); 
+            param.Add("@REC_QTYIsNull", d.REC_QTY.ListNull()); 
+            param.Add("@REC_BADIsNull", d.REC_BAD.ListNull()); 
+            param.Add("@TRAN_FLAGIsNull", d.TRAN_FLAG.ListNull()); 
+            param.Add("@BC_OKIsNull", d.BC_OK.ListNull()); 
+            param.Add("@BRANCHIsNull", d.BRANCH.ListNull()); 
+            param.Add("@GROUPIsNull", d.GROUP.ListNull()); 
+            param.Add("@BAR_GRPIsNull", d.BAR_GRP.ListNull()); 
+            param.Add("@TRAN_CYIsNull", d.TRAN_CY.ListNull()); 
+            param.Add("@ORDERIsNull", d.ORDER.ListNull()); 
+            param.Add("@ORDER_NOIsNull", d.ORDER_NO.ListNull()); 
+            param.Add("@FROM_TYPEIsNull", d.FROM_TYPE.ListNull()); 
+            param.Add("@USER_IDIsNull", d.USER_ID.ListNull()); 
+            param.Add("@USER_DATEIsNull", d.USER_DATE.ListNull()); 
+            param.Add("@BCGRPIsNull", d.BCGRP.ListNull()); 
+            param.Add("@STAFF_NAMEIsNull", d.STAFF_NAME.ListNull()); 
+            param.Add("@RES_NAMEIsNull", d.RES_NAME.ListNull()); 
+            param.Add("@BCSTAMPIsNull", d.BCSTAMP.ListNull()); 
+            param.Add("@ROUND_NOIsNull", d.ROUND_NO.ListNull()); 
+            param.Add("@REC_LOSTIsNull", d.REC_LOST.ListNull()); 
+            param.Add("@DOC_NOIsNull", d.DOC_NO.ListNull()); 
+            param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+            */
+
+            string cmd = "";
+            /*
+            string cmd = "SELECT * FROM product.dbo.PDK1_T_R_OunDam_H " +
+            $"WHERE (@SEQUENCEIsNull IS NULL OR SEQUENCE IN ('{ d.SEQUENCE.Join("','") }')) " +
+            $"AND (@BRN_CODEIsNull IS NULL OR BRN_CODE IN ('{ d.BRN_CODE.Join("','") }')) " +
+            $"AND (@DATEIsNull IS NULL OR DATE IN ('{ d.DATE.Join("','") }')) " +
+            $"AND (@RES_IDIsNull IS NULL OR RES_ID IN ('{ d.RES_ID.Join("','") }')) " +
+            $"AND (@PAY_DATEIsNull IS NULL OR PAY_DATE IN ('{ d.PAY_DATE.Join("','") }')) " +
+            $"AND (@TYPEIsNull IS NULL OR TYPE IN ('{ d.TYPE.Join("','") }')) " +
+            $"AND (@PRC_NEXTIsNull IS NULL OR PRC_NEXT IN ('{ d.PRC_NEXT.Join("','") }')) " +
+            $"AND (@PAY_ITEMIsNull IS NULL OR PAY_ITEM IN ('{ d.PAY_ITEM.Join("','") }')) " +
+            $"AND (@MACH_IDIsNull IS NULL OR MACH_ID IN ('{ d.MACH_ID.Join("','") }')) " +
+            $"AND (@STOCKIsNull IS NULL OR STOCK IN ('{ d.STOCK.Join("','") }')) " +
+            $"AND (@REC_QUANIsNull IS NULL OR REC_QUAN IN ('{ d.REC_QUAN.Join("','") }')) " +
+            $"AND (@REC_WEIIsNull IS NULL OR REC_WEI IN ('{ d.REC_WEI.Join("','") }')) " +
+            $"AND (@U_PRICEIsNull IS NULL OR U_PRICE IN ('{ d.U_PRICE.Join("','") }')) " +
+            $"AND (@T_PRICEIsNull IS NULL OR T_PRICE IN ('{ d.T_PRICE.Join("','") }')) " +
+            $"AND (@S_PRICEIsNull IS NULL OR S_PRICE IN ('{ d.S_PRICE.Join("','") }')) " +
+            $"AND (@BILL_NOIsNull IS NULL OR BILL_NO IN ('{ d.BILL_NO.Join("','") }')) " +
+            $"AND (@STAFFIsNull IS NULL OR STAFF IN ('{ d.STAFF.Join("','") }')) " +
+            $"AND (@PAY_QUANIsNull IS NULL OR PAY_QUAN IN ('{ d.PAY_QUAN.Join("','") }')) " +
+            $"AND (@PAY_WEIIsNull IS NULL OR PAY_WEI IN ('{ d.PAY_WEI.Join("','") }')) " +
+            $"AND (@CHKIsNull IS NULL OR CHK IN ('{ d.CHK.Join("','") }')) " +
+            $"AND (@YAIIsNull IS NULL OR YAI IN ('{ d.YAI.Join("','") }')) " +
+            $"AND (@PRN_FLAGIsNull IS NULL OR PRN_FLAG IN ('{ d.PRN_FLAG.Join("','") }')) " +
+            $"AND (@P_FLAGIsNull IS NULL OR P_FLAG IN ('{ d.P_FLAG.Join("','") }')) " +
+            $"AND (@EDIT_FLAGIsNull IS NULL OR EDIT_FLAG IN ('{ d.EDIT_FLAG.Join("','") }')) " +
+            $"AND (@BARCODEIsNull IS NULL OR BARCODE IN ('{ d.BARCODE.Join("','") }')) " +
+            $"AND (@WEI_FLAGIsNull IS NULL OR WEI_FLAG IN ('{ d.WEI_FLAG.Join("','") }')) " +
+            $"AND (@REC_FLAGIsNull IS NULL OR REC_FLAG IN ('{ d.REC_FLAG.Join("','") }')) " +
+            $"AND (@REC_QTYIsNull IS NULL OR REC_QTY IN ('{ d.REC_QTY.Join("','") }')) " +
+            $"AND (@REC_BADIsNull IS NULL OR REC_BAD IN ('{ d.REC_BAD.Join("','") }')) " +
+            $"AND (@TRAN_FLAGIsNull IS NULL OR TRAN_FLAG IN ('{ d.TRAN_FLAG.Join("','") }')) " +
+            $"AND (@BC_OKIsNull IS NULL OR BC_OK IN ('{ d.BC_OK.Join("','") }')) " +
+            $"AND (@BRANCHIsNull IS NULL OR BRANCH IN ('{ d.BRANCH.Join("','") }')) " +
+            $"AND (@GROUPIsNull IS NULL OR GROUP IN ('{ d.GROUP.Join("','") }')) " +
+            $"AND (@BAR_GRPIsNull IS NULL OR BAR_GRP IN ('{ d.BAR_GRP.Join("','") }')) " +
+            $"AND (@TRAN_CYIsNull IS NULL OR TRAN_CY IN ('{ d.TRAN_CY.Join("','") }')) " +
+            $"AND (@ORDERIsNull IS NULL OR ORDER IN ('{ d.ORDER.Join("','") }')) " +
+            $"AND (@ORDER_NOIsNull IS NULL OR ORDER_NO IN ('{ d.ORDER_NO.Join("','") }')) " +
+            $"AND (@FROM_TYPEIsNull IS NULL OR FROM_TYPE IN ('{ d.FROM_TYPE.Join("','") }')) " +
+            $"AND (@USER_IDIsNull IS NULL OR USER_ID IN ('{ d.USER_ID.Join("','") }')) " +
+            $"AND (@USER_DATEIsNull IS NULL OR USER_DATE IN ('{ d.USER_DATE.Join("','") }')) " +
+            $"AND (@BCGRPIsNull IS NULL OR BCGRP IN ('{ d.BCGRP.Join("','") }')) " +
+            $"AND (@STAFF_NAMEIsNull IS NULL OR STAFF_NAME IN ('{ d.STAFF_NAME.Join("','") }')) " +
+            $"AND (@RES_NAMEIsNull IS NULL OR RES_NAME IN ('{ d.RES_NAME.Join("','") }')) " +
+            $"AND (@BCSTAMPIsNull IS NULL OR BCSTAMP IN ('{ d.BCSTAMP.Join("','") }')) " +
+            $"AND (@ROUND_NOIsNull IS NULL OR ROUND_NO IN ('{ d.ROUND_NO.Join("','") }')) " +
+            $"AND (@REC_LOSTIsNull IS NULL OR REC_LOST IN ('{ d.REC_LOST.Join("','") }')) " +
+            $"AND (@DOC_NOIsNull IS NULL OR DOC_NO IN ('{ d.DOC_NO.Join("','") }')) " +
+            $"AND (SEQUENCE LIKE @txtSearch OR SEQUENCE LIKE @txtSearch) " ;  
+            //"ORDER BY  ;"; 
+            */
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H>(cmd, param).ToList();
+            return res;
+        }
+
+        public int Insert(PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@SEQUENCE", d.sequence);
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@DATE", d.date);
+            param.Add("@RES_ID", d.res_id);
+            param.Add("@PAY_DATE", d.pay_date);
+            param.Add("@TYPE", d.type);
+            param.Add("@PRC_NEXT", d.prc_next);
+            param.Add("@PAY_ITEM", d.pay_item);
+            param.Add("@MACH_ID", d.mach_id);
+            param.Add("@STOCK", d.stock);
+            param.Add("@REC_QUAN", d.rec_quan);
+            param.Add("@REC_WEI", d.rec_wei);
+            param.Add("@U_PRICE", d.u_price);
+            param.Add("@T_PRICE", d.t_price);
+            param.Add("@S_PRICE", d.s_price);
+            param.Add("@BILL_NO", d.bill_no);
+            param.Add("@STAFF", d.staff);
+            param.Add("@PAY_QUAN", d.pay_quan);
+            param.Add("@PAY_WEI", d.pay_wei);
+            param.Add("@CHK", d.chk);
+            param.Add("@YAI", d.yai);
+            param.Add("@PRN_FLAG", d.prn_flag);
+            param.Add("@P_FLAG", d.p_flag);
+            param.Add("@EDIT_FLAG", d.edit_flag);
+            param.Add("@BARCODE", d.barcode);
+            param.Add("@WEI_FLAG", d.wei_flag);
+            param.Add("@REC_FLAG", d.rec_flag);
+            param.Add("@REC_QTY", d.rec_qty);
+            param.Add("@REC_BAD", d.rec_bad);
+            param.Add("@TRAN_FLAG", d.tran_flag);
+            param.Add("@BC_OK", d.bc_ok);
+            param.Add("@BRANCH", d.branch);
+            param.Add("@GROUP", d.group);
+            param.Add("@BAR_GRP", d.bar_grp);
+            param.Add("@TRAN_CY", d.tran_cy);
+            param.Add("@ORDER", d.order);
+            param.Add("@ORDER_NO", d.order_no);
+            param.Add("@FROM_TYPE", d.from_type);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@BCGRP", d.bcgrp);
+            param.Add("@STAFF_NAME", d.staff_name);
+            param.Add("@RES_NAME", d.res_name);
+            param.Add("@BCSTAMP", d.bcstamp);
+            param.Add("@ROUND_NO", d.round_no);
+            param.Add("@REC_LOST", d.rec_lost);
+            param.Add("@DOC_NO", d.doc_no);
+
+            string cmd = "INSERT INTO product.dbo.PDK1_T_R_OunDam_H " +
+            $"      (SEQUENCE, BRN_CODE, DATE, RES_ID, PAY_DATE, TYPE, PRC_NEXT, PAY_ITEM, MACH_ID, STOCK, REC_QUAN, REC_WEI, U_PRICE, T_PRICE, S_PRICE, BILL_NO, STAFF, PAY_QUAN, PAY_WEI, CHK, YAI, PRN_FLAG, P_FLAG, EDIT_FLAG, BARCODE, WEI_FLAG, REC_FLAG, REC_QTY, REC_BAD, TRAN_FLAG, BC_OK, BRANCH, GROUP, BAR_GRP, TRAN_CY, ORDER, ORDER_NO, FROM_TYPE, USER_ID, USER_DATE, BCGRP, STAFF_NAME, RES_NAME, BCSTAMP, ROUND_NO, REC_LOST, DOC_NO) " +
+            $"VALUES(@SEQUENCE, @BRN_CODE, @DATE, @RES_ID, @PAY_DATE, @TYPE, @PRC_NEXT, @PAY_ITEM, @MACH_ID, @STOCK, @REC_QUAN, @REC_WEI, @U_PRICE, @T_PRICE, @S_PRICE, @BILL_NO, @STAFF, @PAY_QUAN, @PAY_WEI, @CHK, @YAI, @PRN_FLAG, @P_FLAG, @EDIT_FLAG, @BARCODE, @WEI_FLAG, @REC_FLAG, @REC_QTY, @REC_BAD, @TRAN_FLAG, @BC_OK, @BRANCH, @GROUP, @BAR_GRP, @TRAN_CY, @ORDER, @ORDER_NO, @FROM_TYPE, @USER_ID, @USER_DATE, @BCGRP, @STAFF_NAME, @RES_NAME, @BCSTAMP, @ROUND_NO, @REC_LOST, @DOC_NO); " +
+            $"SELECT SCOPE_IDENTITY();";
+            return ExecuteScalar<int>(cmd, param);
+        }
+
+        public int Update(PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@SEQUENCE", d.sequence);
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@DATE", d.date);
+            param.Add("@RES_ID", d.res_id);
+            param.Add("@PAY_DATE", d.pay_date);
+            param.Add("@TYPE", d.type);
+            param.Add("@PRC_NEXT", d.prc_next);
+            param.Add("@PAY_ITEM", d.pay_item);
+            param.Add("@MACH_ID", d.mach_id);
+            param.Add("@STOCK", d.stock);
+            param.Add("@REC_QUAN", d.rec_quan);
+            param.Add("@REC_WEI", d.rec_wei);
+            param.Add("@U_PRICE", d.u_price);
+            param.Add("@T_PRICE", d.t_price);
+            param.Add("@S_PRICE", d.s_price);
+            param.Add("@BILL_NO", d.bill_no);
+            param.Add("@STAFF", d.staff);
+            param.Add("@PAY_QUAN", d.pay_quan);
+            param.Add("@PAY_WEI", d.pay_wei);
+            param.Add("@CHK", d.chk);
+            param.Add("@YAI", d.yai);
+            param.Add("@PRN_FLAG", d.prn_flag);
+            param.Add("@P_FLAG", d.p_flag);
+            param.Add("@EDIT_FLAG", d.edit_flag);
+            param.Add("@BARCODE", d.barcode);
+            param.Add("@WEI_FLAG", d.wei_flag);
+            param.Add("@REC_FLAG", d.rec_flag);
+            param.Add("@REC_QTY", d.rec_qty);
+            param.Add("@REC_BAD", d.rec_bad);
+            param.Add("@TRAN_FLAG", d.tran_flag);
+            param.Add("@BC_OK", d.bc_ok);
+            param.Add("@BRANCH", d.branch);
+            param.Add("@GROUP", d.group);
+            param.Add("@BAR_GRP", d.bar_grp);
+            param.Add("@TRAN_CY", d.tran_cy);
+            param.Add("@ORDER", d.order);
+            param.Add("@ORDER_NO", d.order_no);
+            param.Add("@FROM_TYPE", d.from_type);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@BCGRP", d.bcgrp);
+            param.Add("@STAFF_NAME", d.staff_name);
+            param.Add("@RES_NAME", d.res_name);
+            param.Add("@BCSTAMP", d.bcstamp);
+            param.Add("@ROUND_NO", d.round_no);
+            param.Add("@REC_LOST", d.rec_lost);
+            param.Add("@DOC_NO", d.doc_no);
+            string cmd = "";
+            /*
+                   cmd = UPDATE product.dbo.PDK1_T_R_OunDam_H "+
+            "SET SEQUENCE = @SEQUENCE "+ 
+            " , BRN_CODE = @BRN_CODE "+ 
+            " , DATE = @DATE "+ 
+            " , RES_ID = @RES_ID "+ 
+            " , PAY_DATE = @PAY_DATE "+ 
+            " , TYPE = @TYPE "+ 
+            " , PRC_NEXT = @PRC_NEXT "+ 
+            " , PAY_ITEM = @PAY_ITEM "+ 
+            " , MACH_ID = @MACH_ID "+ 
+            " , STOCK = @STOCK "+ 
+            " , REC_QUAN = @REC_QUAN "+ 
+            " , REC_WEI = @REC_WEI "+ 
+            " , U_PRICE = @U_PRICE "+ 
+            " , T_PRICE = @T_PRICE "+ 
+            " , S_PRICE = @S_PRICE "+ 
+            " , BILL_NO = @BILL_NO "+ 
+            " , STAFF = @STAFF "+ 
+            " , PAY_QUAN = @PAY_QUAN "+ 
+            " , PAY_WEI = @PAY_WEI "+ 
+            " , CHK = @CHK "+ 
+            " , YAI = @YAI "+ 
+            " , PRN_FLAG = @PRN_FLAG "+ 
+            " , P_FLAG = @P_FLAG "+ 
+            " , EDIT_FLAG = @EDIT_FLAG "+ 
+            " , BARCODE = @BARCODE "+ 
+            " , WEI_FLAG = @WEI_FLAG "+ 
+            " , REC_FLAG = @REC_FLAG "+ 
+            " , REC_QTY = @REC_QTY "+ 
+            " , REC_BAD = @REC_BAD "+ 
+            " , TRAN_FLAG = @TRAN_FLAG "+ 
+            " , BC_OK = @BC_OK "+ 
+            " , BRANCH = @BRANCH "+ 
+            " , GROUP = @GROUP "+ 
+            " , BAR_GRP = @BAR_GRP "+ 
+            " , TRAN_CY = @TRAN_CY "+ 
+            " , ORDER = @ORDER "+ 
+            " , ORDER_NO = @ORDER_NO "+ 
+            " , FROM_TYPE = @FROM_TYPE "+ 
+            " , USER_ID = @USER_ID "+ 
+            " , USER_DATE = @USER_DATE "+ 
+            " , BCGRP = @BCGRP "+ 
+            " , STAFF_NAME = @STAFF_NAME "+ 
+            " , RES_NAME = @RES_NAME "+ 
+            " , BCSTAMP = @BCSTAMP "+ 
+            " , ROUND_NO = @ROUND_NO "+ 
+            " , REC_LOST = @REC_LOST "+ 
+            " , DOC_NO = @DOC_NO "+ 
+            "WHERE SEQUENCE = @SEQUENCE "+ 
+            " AND BRN_CODE = @BRN_CODE "+ 
+            " AND DATE = @DATE "+ 
+            " AND RES_ID = @RES_ID "+ 
+            " AND PAY_DATE = @PAY_DATE "+ 
+            " AND TYPE = @TYPE "+ 
+            " AND PRC_NEXT = @PRC_NEXT "+ 
+            " AND PAY_ITEM = @PAY_ITEM "+ 
+            " AND MACH_ID = @MACH_ID "+ 
+            " AND STOCK = @STOCK "+ 
+            " AND REC_QUAN = @REC_QUAN "+ 
+            " AND REC_WEI = @REC_WEI "+ 
+            " AND U_PRICE = @U_PRICE "+ 
+            " AND T_PRICE = @T_PRICE "+ 
+            " AND S_PRICE = @S_PRICE "+ 
+            " AND BILL_NO = @BILL_NO "+ 
+            " AND STAFF = @STAFF "+ 
+            " AND PAY_QUAN = @PAY_QUAN "+ 
+            " AND PAY_WEI = @PAY_WEI "+ 
+            " AND CHK = @CHK "+ 
+            " AND YAI = @YAI "+ 
+            " AND PRN_FLAG = @PRN_FLAG "+ 
+            " AND P_FLAG = @P_FLAG "+ 
+            " AND EDIT_FLAG = @EDIT_FLAG "+ 
+            " AND BARCODE = @BARCODE "+ 
+            " AND WEI_FLAG = @WEI_FLAG "+ 
+            " AND REC_FLAG = @REC_FLAG "+ 
+            " AND REC_QTY = @REC_QTY "+ 
+            " AND REC_BAD = @REC_BAD "+ 
+            " AND TRAN_FLAG = @TRAN_FLAG "+ 
+            " AND BC_OK = @BC_OK "+ 
+            " AND BRANCH = @BRANCH "+ 
+            " AND GROUP = @GROUP "+ 
+            " AND BAR_GRP = @BAR_GRP "+ 
+            " AND TRAN_CY = @TRAN_CY "+ 
+            " AND ORDER = @ORDER "+ 
+            " AND ORDER_NO = @ORDER_NO "+ 
+            " AND FROM_TYPE = @FROM_TYPE "+ 
+            " AND USER_ID = @USER_ID "+ 
+            " AND USER_DATE = @USER_DATE "+ 
+            " AND BCGRP = @BCGRP "+ 
+            " AND STAFF_NAME = @STAFF_NAME "+ 
+            " AND RES_NAME = @RES_NAME "+ 
+            " AND BCSTAMP = @BCSTAMP "+ 
+            " AND ROUND_NO = @ROUND_NO "+ 
+            " AND REC_LOST = @REC_LOST "+ 
+            " AND DOC_NO = @DOC_NO "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+        public int Delete(PDK1Model.Model.Dataset.Mssql.Product.PDK1_T_R_OunDam_H d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@SEQUENCE", d.sequence);
+            param.Add("@BRN_CODE", d.brn_code.GetValue());
+            param.Add("@DATE", d.date);
+            param.Add("@RES_ID", d.res_id.GetValue());
+            param.Add("@PAY_DATE", d.pay_date);
+            param.Add("@TYPE", d.type.GetValue());
+            param.Add("@PRC_NEXT", d.prc_next.GetValue());
+            param.Add("@PAY_ITEM", d.pay_item);
+            param.Add("@MACH_ID", d.mach_id.GetValue());
+            param.Add("@STOCK", d.stock.GetValue());
+            param.Add("@REC_QUAN", d.rec_quan);
+            param.Add("@REC_WEI", d.rec_wei);
+            param.Add("@U_PRICE", d.u_price);
+            param.Add("@T_PRICE", d.t_price);
+            param.Add("@S_PRICE", d.s_price);
+            param.Add("@BILL_NO", d.bill_no.GetValue());
+            param.Add("@STAFF", d.staff.GetValue());
+            param.Add("@PAY_QUAN", d.pay_quan);
+            param.Add("@PAY_WEI", d.pay_wei);
+            param.Add("@CHK", d.chk.GetValue());
+            param.Add("@YAI", d.yai.GetValue());
+            param.Add("@PRN_FLAG", d.prn_flag.GetValue());
+            param.Add("@P_FLAG", d.p_flag.GetValue());
+            param.Add("@EDIT_FLAG", d.edit_flag.GetValue());
+            param.Add("@BARCODE", d.barcode.GetValue());
+            param.Add("@WEI_FLAG", d.wei_flag.GetValue());
+            param.Add("@REC_FLAG", d.rec_flag.GetValue());
+            param.Add("@REC_QTY", d.rec_qty);
+            param.Add("@REC_BAD", d.rec_bad);
+            param.Add("@TRAN_FLAG", d.tran_flag.GetValue());
+            param.Add("@BC_OK", d.bc_ok.GetValue());
+            param.Add("@BRANCH", d.branch.GetValue());
+            param.Add("@GROUP", d.group);
+            param.Add("@BAR_GRP", d.bar_grp.GetValue());
+            param.Add("@TRAN_CY", d.tran_cy.GetValue());
+            param.Add("@ORDER", d.order.GetValue());
+            param.Add("@ORDER_NO", d.order_no.GetValue());
+            param.Add("@FROM_TYPE", d.from_type.GetValue());
+            param.Add("@USER_ID", d.user_id.GetValue());
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@BCGRP", d.bcgrp.GetValue());
+            param.Add("@STAFF_NAME", d.staff_name.GetValue());
+            param.Add("@RES_NAME", d.res_name.GetValue());
+            param.Add("@BCSTAMP", d.bcstamp.GetValue());
+            param.Add("@ROUND_NO", d.round_no);
+            param.Add("@REC_LOST", d.rec_lost);
+            param.Add("@DOC_NO", d.doc_no.GetValue());
+            string cmd = "";
+            /*
+                   cmd = DELETE FROM product.dbo.PDK1_T_R_OunDam_H "+
+            "WHERE SEQUENCE = @SEQUENCE "+ 
+            " AND BRN_CODE = @BRN_CODE "+ 
+            " AND DATE = @DATE "+ 
+            " AND RES_ID = @RES_ID "+ 
+            " AND PAY_DATE = @PAY_DATE "+ 
+            " AND TYPE = @TYPE "+ 
+            " AND PRC_NEXT = @PRC_NEXT "+ 
+            " AND PAY_ITEM = @PAY_ITEM "+ 
+            " AND MACH_ID = @MACH_ID "+ 
+            " AND STOCK = @STOCK "+ 
+            " AND REC_QUAN = @REC_QUAN "+ 
+            " AND REC_WEI = @REC_WEI "+ 
+            " AND U_PRICE = @U_PRICE "+ 
+            " AND T_PRICE = @T_PRICE "+ 
+            " AND S_PRICE = @S_PRICE "+ 
+            " AND BILL_NO = @BILL_NO "+ 
+            " AND STAFF = @STAFF "+ 
+            " AND PAY_QUAN = @PAY_QUAN "+ 
+            " AND PAY_WEI = @PAY_WEI "+ 
+            " AND CHK = @CHK "+ 
+            " AND YAI = @YAI "+ 
+            " AND PRN_FLAG = @PRN_FLAG "+ 
+            " AND P_FLAG = @P_FLAG "+ 
+            " AND EDIT_FLAG = @EDIT_FLAG "+ 
+            " AND BARCODE = @BARCODE "+ 
+            " AND WEI_FLAG = @WEI_FLAG "+ 
+            " AND REC_FLAG = @REC_FLAG "+ 
+            " AND REC_QTY = @REC_QTY "+ 
+            " AND REC_BAD = @REC_BAD "+ 
+            " AND TRAN_FLAG = @TRAN_FLAG "+ 
+            " AND BC_OK = @BC_OK "+ 
+            " AND BRANCH = @BRANCH "+ 
+            " AND GROUP = @GROUP "+ 
+            " AND BAR_GRP = @BAR_GRP "+ 
+            " AND TRAN_CY = @TRAN_CY "+ 
+            " AND ORDER = @ORDER "+ 
+            " AND ORDER_NO = @ORDER_NO "+ 
+            " AND FROM_TYPE = @FROM_TYPE "+ 
+            " AND USER_ID = @USER_ID "+ 
+            " AND USER_DATE = @USER_DATE "+ 
+            " AND BCGRP = @BCGRP "+ 
+            " AND STAFF_NAME = @STAFF_NAME "+ 
+            " AND RES_NAME = @RES_NAME "+ 
+            " AND BCSTAMP = @BCSTAMP "+ 
+            " AND ROUND_NO = @ROUND_NO "+ 
+            " AND REC_LOST = @REC_LOST "+ 
+            " AND DOC_NO = @DOC_NO "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+    }
+}

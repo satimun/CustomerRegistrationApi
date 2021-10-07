@@ -1,0 +1,62 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace PDK1ADO.Connect.Mssql.Product
+{
+    public class PDS_PrdBrnHAdo:ProductBase
+    {
+        private static PDS_PrdBrnHAdo instant;
+
+        public static PDS_PrdBrnHAdo GetInstant()
+        {
+            if (instant == null) instant = new PDS_PrdBrnHAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private PDS_PrdBrnHAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH> ListActive()
+        {
+            string cmd = " SELECT * FROM product.dbo.PDS_PRDBRNH ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH> GetData(PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@BRN_CODE", d.brn_code);
+            param.Add("@BRN_DESC", d.brn_desc);
+            param.Add("@IPADDRESS", d.ipaddress);
+            param.Add("@SERVERNAME", d.servername);
+            param.Add("@LOCATDOC", d.locatdoc);
+            param.Add("@LOCATSCAN", d.locatscan);
+            param.Add("@DATE_SQL", d.date_sql);
+            param.Add("@DEVICE_DOS", d.device_dos);
+            param.Add("@PRD_BILL", d.prd_bill);
+            param.Add("@BRN_PRD", d.brn_prd);
+            param.Add("@BRN_PHYSICAL", d.brn_physical);
+            param.Add("@BRN_PROFIT", d.brn_profit);
+            param.Add("@BRN_PROFITDESC", d.brn_profitdesc);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM product.dbo.PDS_PRDBRNH " +
+            $"WHERE (@BRN_CODE IS NULL OR BRN_CODE = @BRN_CODE) ";
+            
+            //$"AND (BRN_CODE LIKE @txtSearch OR BRN_CODE LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH>(cmd, param).ToList();
+            return res;
+        }
+    }
+}

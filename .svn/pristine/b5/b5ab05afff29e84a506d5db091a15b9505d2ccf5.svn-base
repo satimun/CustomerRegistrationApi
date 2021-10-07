@@ -1,0 +1,198 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using KKFCoreEngine.Util;
+
+namespace PDK1ADO.Connect.Mssql.Centraldb
+{
+    public class CsProductTypeAdo:CentraldbBase
+    {
+        private static CsProductTypeAdo instant;
+
+        public static CsProductTypeAdo GetInstant()
+        {
+            if (instant == null) instant = new CsProductTypeAdo();
+            return instant;
+        }
+
+        private string conectStr { get; set; }
+
+        private CsProductTypeAdo() { }
+
+
+        public List<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType> ListActive()
+        {
+            string cmd = " SELECT * FROM centraldb.dbo.CsProductType ";
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType>(cmd, null).ToList();
+
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType> GetData(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            param.Add("@PRODUCT_TYPE", d.product_type);
+            param.Add("@PRODUCT_DESC", d.product_desc);
+            param.Add("@USER_ID", d.user_id);
+            param.Add("@USER_DATE", d.user_date);
+            param.Add("@PRODUCTCATE", d.productcate);
+            param.Add("@PRODUCTCATE_DESC", d.productcate_desc);
+            param.Add("@PRODUCTCATE_GRP", d.productcate_grp);
+            param.Add("@PRODUCTCATE_GRP_DESC", d.productcate_grp_desc);
+            param.Add("@PRODUCTCATE_MATE", d.productcate_mate);
+            param.Add("@PRODUCTCATE_MATE_DESC", d.productcate_mate_desc);
+            param.Add("@HELP_TWINE", d.help_twine);
+            param.Add("@SYMBOL", d.symbol);
+            param.Add("@PUM_FLAG", d.pum_flag);
+            //param.Add("@txtSearch", $"%{d.txtSearch.GetValue()}%");
+
+            string cmd = "SELECT * FROM centraldb.dbo.CsProductType " +            
+            $"  WHERE (@PRODUCTCATE_GRP IS NULL OR PRODUCTCATE_GRP = @PRODUCTCATE_GRP) " +          
+            $"  AND (@HELP_TWINE IS NULL OR HELP_TWINE = @HELP_TWINE) ";
+     
+
+            //$"AND (PRODUCT_TYPE LIKE @txtSearch OR PRODUCT_TYPE LIKE @txtSearch) " +  
+            //"ORDER BY  ;"; 
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType>(cmd, param).ToList();
+            return res;
+        }
+
+        public List<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType> Search(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d)
+        {
+            DynamicParameters param = new DynamicParameters();
+            
+
+            string cmd = "";
+            
+
+            var res = Query<PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType>(cmd, param).ToList();
+            return res;
+        }
+
+        public int Insert(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@PRODUCT_TYPE", d.product_type.GetValue());
+            param.Add("@PRODUCT_DESC", d.product_desc.GetValue());
+            param.Add("@USER_ID", d.user_id.GetValue());
+            param.Add("@USER_DATE", d.user_date.GetDateTimeString());
+            param.Add("@PRODUCTCATE", d.productcate.GetValue());
+            param.Add("@PRODUCTCATE_DESC", d.productcate_desc.GetValue());
+            param.Add("@PRODUCTCATE_GRP", d.productcate_grp.GetValue());
+            param.Add("@PRODUCTCATE_GRP_DESC", d.productcate_grp_desc.GetValue());
+            param.Add("@PRODUCTCATE_MATE", d.productcate_mate.GetValue());
+            param.Add("@PRODUCTCATE_MATE_DESC", d.productcate_mate_desc.GetValue());
+            param.Add("@HELP_TWINE", d.help_twine.GetValue());
+            param.Add("@SYMBOL", d.symbol.GetValue());
+            param.Add("@PUM_FLAG", d.pum_flag.GetValue());
+            string cmd = "INSERT INTO centraldb.dbo.CsProductType " +
+            $"      (PRODUCT_TYPE, PRODUCT_DESC, USER_ID, USER_DATE, PRODUCTCATE, PRODUCTCATE_DESC, PRODUCTCATE_GRP, PRODUCTCATE_GRP_DESC, PRODUCTCATE_MATE, PRODUCTCATE_MATE_DESC, HELP_TWINE, SYMBOL, PUM_FLAG) " +
+            $"VALUES(@PRODUCT_TYPE, @PRODUCT_DESC, @USER_ID, @USER_DATE, @PRODUCTCATE, @PRODUCTCATE_DESC, @PRODUCTCATE_GRP, @PRODUCTCATE_GRP_DESC, @PRODUCTCATE_MATE, @PRODUCTCATE_MATE_DESC, @HELP_TWINE, @SYMBOL, @PUM_FLAG); " +
+            $"SELECT SCOPE_IDENTITY();";
+            return ExecuteScalar<int>(cmd, param);
+        }
+
+        public int Update(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@PRODUCT_TYPE", d.product_type.GetValue());
+            param.Add("@PRODUCT_DESC", d.product_desc.GetValue());
+            param.Add("@USER_ID", d.user_id.GetValue());
+            param.Add("@USER_DATE", d.user_date.GetDateTimeString());
+            param.Add("@PRODUCTCATE", d.productcate.GetValue());
+            param.Add("@PRODUCTCATE_DESC", d.productcate_desc.GetValue());
+            param.Add("@PRODUCTCATE_GRP", d.productcate_grp.GetValue());
+            param.Add("@PRODUCTCATE_GRP_DESC", d.productcate_grp_desc.GetValue());
+            param.Add("@PRODUCTCATE_MATE", d.productcate_mate.GetValue());
+            param.Add("@PRODUCTCATE_MATE_DESC", d.productcate_mate_desc.GetValue());
+            param.Add("@HELP_TWINE", d.help_twine.GetValue());
+            param.Add("@SYMBOL", d.symbol.GetValue());
+            param.Add("@PUM_FLAG", d.pum_flag.GetValue());
+            string cmd = "";
+            /*
+                   cmd = UPDATE centraldb.dbo.CsProductType "+
+            "SET PRODUCT_TYPE = @PRODUCT_TYPE "+ 
+            " , PRODUCT_DESC = @PRODUCT_DESC "+ 
+            " , USER_ID = @USER_ID "+ 
+            " , USER_DATE = @USER_DATE "+ 
+            " , PRODUCTCATE = @PRODUCTCATE "+ 
+            " , PRODUCTCATE_DESC = @PRODUCTCATE_DESC "+ 
+            " , PRODUCTCATE_GRP = @PRODUCTCATE_GRP "+ 
+            " , PRODUCTCATE_GRP_DESC = @PRODUCTCATE_GRP_DESC "+ 
+            " , PRODUCTCATE_MATE = @PRODUCTCATE_MATE "+ 
+            " , PRODUCTCATE_MATE_DESC = @PRODUCTCATE_MATE_DESC "+ 
+            " , HELP_TWINE = @HELP_TWINE "+ 
+            " , SYMBOL = @SYMBOL "+ 
+            " , PUM_FLAG = @PUM_FLAG "+ 
+            "WHERE PRODUCT_TYPE = @PRODUCT_TYPE "+ 
+            " AND PRODUCT_DESC = @PRODUCT_DESC "+ 
+            " AND USER_ID = @USER_ID "+ 
+            " AND USER_DATE = @USER_DATE "+ 
+            " AND PRODUCTCATE = @PRODUCTCATE "+ 
+            " AND PRODUCTCATE_DESC = @PRODUCTCATE_DESC "+ 
+            " AND PRODUCTCATE_GRP = @PRODUCTCATE_GRP "+ 
+            " AND PRODUCTCATE_GRP_DESC = @PRODUCTCATE_GRP_DESC "+ 
+            " AND PRODUCTCATE_MATE = @PRODUCTCATE_MATE "+ 
+            " AND PRODUCTCATE_MATE_DESC = @PRODUCTCATE_MATE_DESC "+ 
+            " AND HELP_TWINE = @HELP_TWINE "+ 
+            " AND SYMBOL = @SYMBOL "+ 
+            " AND PUM_FLAG = @PUM_FLAG "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+        public int Delete(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d, string userID = "", SqlTransaction transac = null)
+        {
+            var param = new Dapper.DynamicParameters();
+            param.Add("@PRODUCT_TYPE", d.product_type.GetValue());
+            param.Add("@PRODUCT_DESC", d.product_desc.GetValue());
+            param.Add("@USER_ID", d.user_id.GetValue());
+            param.Add("@USER_DATE", d.user_date.GetDateTimeString());
+            param.Add("@PRODUCTCATE", d.productcate.GetValue());
+            param.Add("@PRODUCTCATE_DESC", d.productcate_desc.GetValue());
+            param.Add("@PRODUCTCATE_GRP", d.productcate_grp.GetValue());
+            param.Add("@PRODUCTCATE_GRP_DESC", d.productcate_grp_desc.GetValue());
+            param.Add("@PRODUCTCATE_MATE", d.productcate_mate.GetValue());
+            param.Add("@PRODUCTCATE_MATE_DESC", d.productcate_mate_desc.GetValue());
+            param.Add("@HELP_TWINE", d.help_twine.GetValue());
+            param.Add("@SYMBOL", d.symbol.GetValue());
+            param.Add("@PUM_FLAG", d.pum_flag.GetValue());
+            string cmd = "";
+            /*
+                   cmd = DELETE FROM centraldb.dbo.CsProductType "+
+            "WHERE PRODUCT_TYPE = @PRODUCT_TYPE "+ 
+            " AND PRODUCT_DESC = @PRODUCT_DESC "+ 
+            " AND USER_ID = @USER_ID "+ 
+            " AND USER_DATE = @USER_DATE "+ 
+            " AND PRODUCTCATE = @PRODUCTCATE "+ 
+            " AND PRODUCTCATE_DESC = @PRODUCTCATE_DESC "+ 
+            " AND PRODUCTCATE_GRP = @PRODUCTCATE_GRP "+ 
+            " AND PRODUCTCATE_GRP_DESC = @PRODUCTCATE_GRP_DESC "+ 
+            " AND PRODUCTCATE_MATE = @PRODUCTCATE_MATE "+ 
+            " AND PRODUCTCATE_MATE_DESC = @PRODUCTCATE_MATE_DESC "+ 
+            " AND HELP_TWINE = @HELP_TWINE "+ 
+            " AND SYMBOL = @SYMBOL "+ 
+            " AND PUM_FLAG = @PUM_FLAG "+ 
+            " "; 
+            */
+
+            var res = ExecuteNonQuery(transac, cmd, param);
+            return res;
+        }
+
+        public int Save(PDK1Model.Model.Dataset.Mssql.Centraldb.CsProductType d, string userID = "", SqlTransaction transac = null)
+        {
+            
+            return Insert(d, userID, transac);
+        }
+    }
+ 
+}

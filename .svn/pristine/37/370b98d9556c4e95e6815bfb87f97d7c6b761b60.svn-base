@@ -1,0 +1,47 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PDK1Model.Model.Dataset.Mssql.Product
+{
+    public class PDK1_M_RunOus
+    {
+        public string brn_code;
+        public string barcode;
+        public string bar_grp;
+        public string bar_grplb;
+        public string stock;
+        public string order;
+        public string order_tao;
+        public decimal? item;
+        public string type;
+        public string flag_payed;
+        public string bar_grppd;
+        public string flag_paypd;
+        public string bar_bill;
+        public string clear_flag;
+        public string p_paun;
+        public DateTime? p_paundt;
+        public string w_pa;
+        public string p_pa1;
+        public DateTime? p_pa1dt;
+        public string r_royhu1;
+        public DateTime? r_royhu1dt;
+        public string p_royhu2;
+        public DateTime? p_royhu2dt;
+        public string r_royhu2;
+        public DateTime? r_royhu2dt;
+        public string p_pa2;
+        public DateTime? p_pa2dt;
+        public string r_dam;
+        public DateTime? r_damdt;
+        public DateTime? p_pa1st;
+        public string tran_flag;
+        public string prb_code;
+        public string bc_status;
+
+        public DateTime? date1;
+        public DateTime? date2;
+ 
+    }
+}

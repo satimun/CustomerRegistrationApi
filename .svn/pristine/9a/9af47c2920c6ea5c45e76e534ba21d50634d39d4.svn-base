@@ -1,0 +1,47 @@
+﻿using PDK1Model.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Engine.PDK1
+{
+    public class PDS_PrdBrnHGetAPI : EngineBase<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH>
+    {
+        public PDS_PrdBrnHGetAPI()
+        {
+            PermissionKey = "ADMIN";
+        }
+
+        protected override void ExecuteChild(PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH dataReq, ResponseAPI dataRes)
+        {
+            var res = new List<PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH>();
+            var roles = PDK1ADO.Connect.Mssql.Product.PDS_PrdBrnHAdo.GetInstant().GetData(dataReq);
+
+            foreach (var x in roles)
+            {
+                var tmp = new PDK1Model.Model.Dataset.Mssql.Product.PDS_PrdBrnH();
+
+                tmp.brn_code = x.brn_code;
+                tmp.brn_desc = x.brn_desc;
+                tmp.ipaddress = x.ipaddress;
+                tmp.servername = x.servername;
+                tmp.locatdoc = x.locatdoc;
+                tmp.locatscan = x.locatscan;
+                tmp.date_sql = x.date_sql;
+                tmp.device_dos = x.device_dos;
+                tmp.prd_bill = x.prd_bill;
+                tmp.brn_prd = x.brn_prd;
+                tmp.brn_physical = x.brn_physical;
+                tmp.brn_profit = x.brn_profit;
+                tmp.brn_profitdesc = x.brn_profitdesc;
+                tmp.user_id = x.user_id;
+                tmp.user_date = x.user_date;
+
+                res.Add(tmp);
+            }
+
+            dataRes.data = res;
+        }
+    }
+}

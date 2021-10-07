@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace PDK1DBase
+{
+    public class Class1
+    {
+        private static Class1 instant;
+        public static Class1 GetInstant()
+        {
+            if (instant == null) instant = new Class1();
+            return instant;
+        }
+        private Class1() { }
+
+        public int getDbase()
+        {
+            string FilePath = "D:\\backup";
+
+            var currentDirectory = System.IO.Directory.GetCurrentDirectory();
+
+            string conString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + FilePath + ";Extended Properties=dBASE IV;";
+
+            string DBF_FileName = "STOCK";
+           // DBF_FileName = "PRODDM";
+
+            OleDbConnection conn = new OleDbConnection(conString);
+
+            OleDbCommand command = new OleDbCommand("select * from " + DBF_FileName, conn);
+            conn.Open();
+
+
+
+            /*Load data to table*/
+
+            DataTable dt1 = new DataTable();
+            dt1.Load(command.ExecuteReader());
+            return 1;
+        }
+    }
+}

@@ -1,0 +1,73 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PDK1Model.Model.Dataset.DBase.Product
+{
+    public class RUN_BarCode
+    {
+        // OUB
+        public string brn_code;
+        public string bar_grp;
+        public string stock;
+        public string process;
+        public string pronospc;
+        public string mk_lenspc;
+        public string order;
+        public DateTime? date;
+        public DateTime? oun_date;
+        public string order_tao;
+        public string mach_id;
+        public decimal? item;
+        public string yai_code;
+        public decimal? req_prn;
+        public decimal? amt;
+        public decimal? amt_tot;
+        public string dm_id;
+        public string type;
+        public decimal? paw_amt;
+        public string flag_payed;
+        public decimal? paw_item;
+        public DateTime? prn_date;
+        public string prn_item;
+        public string bar_bill;
+        public string clear_flag;
+        public string tran_flag;
+        public string stress;
+        public decimal? len_grp;
+        public string prb_code;
+
+        // OUS
+        public string s_barcode;
+        public string s_bar_grp;
+        public string s_bar_grplb;
+        public string s_stock;
+        public string s_order;
+        public decimal s_item;
+        public string s_type;
+        public string s_flag_payed;
+        public string s_bar_grppd;
+        public string s_flag_paypd;
+        public string s_bar_bill;
+        public string s_clear_flag;
+        public string s_p_paun;
+        public DateTime? s_p_paundt; //datetime
+        public string s_w_pa;
+        public string s_p_pa1;
+        public DateTime? s_p_pa1dt; //datetime
+        public string s_r_royhu1;
+        public DateTime? s_r_royhu1dt; //datetime
+        public string s_p_royhu2;
+        public DateTime? s_p_royhu2dt; //datetime
+        public string s_r_royhu2;
+        public DateTime? s_r_royhu2dt; //datetime
+        public string s_p_pa2;
+        public DateTime? s_p_pa2dt; //datetime
+        public string s_r_dam;
+        public DateTime? s_r_damdt; //datetime
+        public DateTime? s_p_pa1st; //datetime
+        public string s_tran_flag;
+
+        public string s_brn_code;
+    }
+}

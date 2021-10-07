@@ -1,0 +1,65 @@
+﻿using PDK1Model.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Engine.PDK1
+{
+    public class PDK1_M_RunOusGetAPI : EngineBase<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOus>
+    {
+        public PDK1_M_RunOusGetAPI()
+        {
+            PermissionKey = "ADMIN";
+
+        }
+
+        protected override void ExecuteChild(PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOus dataReq, ResponseAPI dataRes)
+        {
+            var res = new List<PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOus>();
+            var roles = PDK1ADO.Connect.Mssql.Product.PDK1_M_RunOusAdo.GetInstant().GetData(dataReq);
+
+            foreach (var x in roles)
+            {
+                var tmp = new PDK1Model.Model.Dataset.Mssql.Product.PDK1_M_RunOus();
+
+                tmp.brn_code = x.brn_code;
+                tmp.barcode = x.barcode;
+                tmp.bar_grp = x.bar_grp;
+                tmp.bar_grplb = x.bar_grplb;
+                tmp.stock = x.stock;
+                tmp.order = x.order;
+                tmp.order_tao = x.order_tao;
+                tmp.item = x.item;
+                tmp.type = x.type;
+                tmp.flag_payed = x.flag_payed;
+                tmp.bar_grppd = x.bar_grppd;
+                tmp.flag_paypd = x.flag_paypd;
+                tmp.bar_bill = x.bar_bill;
+                tmp.clear_flag = x.clear_flag;
+                tmp.p_paun = x.p_paun;
+                tmp.p_paundt = x.p_paundt;
+                tmp.w_pa = x.w_pa;
+                tmp.p_pa1 = x.p_pa1;
+                tmp.p_pa1dt = x.p_pa1dt;
+                tmp.r_royhu1 = x.r_royhu1;
+                tmp.r_royhu1dt = x.r_royhu1dt;
+                tmp.p_royhu2 = x.p_royhu2;
+                tmp.p_royhu2dt = x.p_royhu2dt;
+                tmp.r_royhu2 = x.r_royhu2;
+                tmp.r_royhu2dt = x.r_royhu2dt;
+                tmp.p_pa2 = x.p_pa2;
+                tmp.p_pa2dt = x.p_pa2dt;
+                tmp.r_dam = x.r_dam;
+                tmp.r_damdt = x.r_damdt;
+                tmp.p_pa1st = x.p_pa1st;
+                tmp.tran_flag = x.tran_flag;
+                tmp.prb_code = x.prb_code;
+                tmp.bc_status = x.bc_status;
+
+                res.Add(tmp);
+            }
+            dataRes.data = res;
+        }
+    }
+}

@@ -1,0 +1,23 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using PDK1API.Engine.PDK1;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Controllers.PDK1
+{
+    [Produces("application/json")]
+    [Route("v1/[controller]")]
+    [ApiController]
+    public class PDK1_M_RoyHuController : ControllersBase
+    {
+        [HttpPost("GetData")]
+        public async Task<dynamic> GetData([FromBody] dynamic data)
+        {
+            var res = new PDK1_M_RoyHuGetAPI();
+            return await Task.Run(() => ResponeValid(res.Execute(HttpContext, data)));
+        }
+    }
+}

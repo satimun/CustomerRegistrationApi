@@ -1,0 +1,85 @@
+﻿using PDK1Model.Model.Response;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace PDK1API.Engine.PDK1
+{
+    public class PDS_VillageExGetAPI : EngineBase<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx>
+    {
+        public PDS_VillageExGetAPI()
+        {
+            PermissionKey = "ADMIN";
+
+        }
+
+        protected override void ExecuteChild(PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx dataReq, ResponseAPI dataRes)
+        {
+            var res = new List<PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx>();
+            var roles = PDK1ADO.Connect.Mssql.Product.PDS_VillageExAdo.GetInstant().GetData(dataReq);
+
+            foreach (var x in roles)
+            {
+                var tmp = new PDK1Model.Model.Dataset.Mssql.Product.PDS_VillageEx();
+
+                tmp.vill_id = x.vill_id;
+                tmp.vill_name = x.vill_name;
+                tmp.vill_type = x.vill_type;
+                tmp.vill_id2 = x.vill_id2;
+                tmp.paun_grp = x.paun_grp;
+                tmp.paun_cost = x.paun_cost;
+                tmp.mad_grp = x.mad_grp;
+                tmp.mad_cost = x.mad_cost;
+                tmp.paunmad_grp = x.paunmad_grp;
+                tmp.paunmad_cost = x.paunmad_cost;
+                tmp.pa_grp = x.pa_grp;
+                tmp.pa_cost = x.pa_cost;
+                tmp.pamph_grp = x.pamph_grp;
+                tmp.pamph_cost = x.pamph_cost;
+                tmp.to_grp = x.to_grp;
+                tmp.to_cost = x.to_cost;
+                tmp.user_id = x.user_id;
+                tmp.user_date = x.user_date;
+                tmp.g_royhu = x.g_royhu;
+                tmp.g_oundam = x.g_oundam;
+                tmp.g_oundam1 = x.g_oundam1;
+                tmp.g_ounkao = x.g_ounkao;
+                tmp.g_ounkao1 = x.g_ounkao1;
+                tmp.gs_r = x.gs_r;
+                tmp.gs_od = x.gs_od;
+                tmp.gs_ok = x.gs_ok;
+                tmp.grp_type = x.grp_type;
+                tmp.ok_type = x.ok_type;
+                tmp.a_royhu = x.a_royhu;
+                tmp.m_royhu = x.m_royhu;
+                tmp.a_oundam = x.a_oundam;
+                tmp.m_oundam = x.m_oundam;
+                tmp.a_ounkao = x.a_ounkao;
+                tmp.m_ounkao = x.m_ounkao;
+                tmp.a_roy = x.a_roy;
+                tmp.m_roy = x.m_roy;
+                tmp.spc_type = x.spc_type;
+                tmp.rh_flag = x.rh_flag;
+                tmp.sp_flag = x.sp_flag;
+                tmp.rp_flag = x.rp_flag;
+                tmp.pd_flag = x.pd_flag;
+                tmp.mph_flag = x.mph_flag;
+                tmp.ok_flag = x.ok_flag;
+                tmp.od_flag = x.od_flag;
+                tmp.op_flag = x.op_flag;
+                tmp.tt_flag = x.tt_flag;
+                tmp.pp_flag = x.pp_flag;
+                tmp.r_method = x.r_method;
+                tmp.p_method = x.p_method;
+                tmp.type = x.type;
+                tmp.od_spc = x.od_spc;
+                tmp.ok_spc = x.ok_spc;
+                tmp.branch = x.branch;
+
+                res.Add(tmp);
+            }
+            dataRes.data = res;
+        }
+    }
+}

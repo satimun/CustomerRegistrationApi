@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PDK1Model.Model.Dataset.Mssql.Product
+{
+    public class PDK1_T_R_OunDam_H
+    {
+        public int? sequence;
+        public string brn_code;
+        public DateTime? date;
+        public string res_id;
+        public DateTime? pay_date;
+        public string type;
+        public string prc_next;
+        public int? pay_item;
+        public string mach_id;
+        public string stock;
+        public decimal? rec_quan;
+        public decimal? rec_wei;
+        public decimal? u_price;
+        public decimal? t_price;
+        public decimal? s_price;
+        public string bill_no;
+        public string staff;
+        public decimal? pay_quan;
+        public decimal? pay_wei;
+        public string chk;
+        public string yai;
+        public string prn_flag;
+        public string p_flag;
+        public string edit_flag;
+        public string barcode;
+        public string wei_flag;
+        public string rec_flag;
+        public decimal? rec_qty;
+        public decimal? rec_bad;
+        public string tran_flag;
+        public string bc_ok;
+        public string branch;
+        public int? group;
+        public string bar_grp;
+        public string tran_cy;
+        public string order;
+        public string order_no;
+        public string from_type;
+        public string user_id;
+        public DateTime? user_date;
+        public string bcgrp;
+        public string staff_name;
+        public string res_name;
+        public string bcstamp;
+        public int? round_no;
+        public decimal? rec_lost;
+        public string doc_no;
+    }
+}

@@ -1,0 +1,65 @@
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PDK1Model.Model.Dataset.Mssql.Product
+{
+    public class PDS_VillageEx
+    {
+        [JsonProperty(PropertyName = "vill_id")]
+        public string vill_id;
+        public string vill_name;
+        public string vill_type;
+        public string vill_id2;
+        public string paun_grp;
+        public string paun_cost;
+        public string mad_grp;
+        public string mad_cost;
+        public string paunmad_grp;
+        public string paunmad_cost;
+        public string pa_grp;
+        public string pa_cost;
+        public string pamph_grp;
+        public string pamph_cost;
+        public string to_grp;
+        public string to_cost;
+        public string user_id;
+        public DateTime? user_date;
+        public string g_royhu;
+        public string g_oundam;
+        public string g_oundam1;
+        public string g_ounkao;
+        public string g_ounkao1;
+        public string gs_r;
+        public string gs_od;
+        public string gs_ok;
+        public string grp_type;
+        public string ok_type;
+        public decimal? a_royhu;
+        public decimal? m_royhu;
+        public decimal? a_oundam;
+        public decimal? m_oundam;
+        public decimal? a_ounkao;
+        public decimal? m_ounkao;
+        public decimal? a_roy;
+        public decimal? m_roy;
+        public string spc_type;
+        public string rh_flag;
+        public string sp_flag;
+        public string rp_flag;
+        public string pd_flag;
+        public string mph_flag;
+        public string ok_flag;
+        public string od_flag;
+        public string op_flag;
+        public string tt_flag;
+        public string pp_flag;
+        public string r_method;
+        public string p_method;
+        public string type;
+        public decimal? od_spc;
+        public decimal? ok_spc;
+        public string branch;
+    }
+}

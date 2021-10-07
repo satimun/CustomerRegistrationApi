@@ -1,0 +1,52 @@
+﻿using Dapper;
+using System;
+using System.Collections.Generic;
+using System.Data.OleDb;
+using System.Text;
+
+namespace PDK1ADO.Connect.DBase.Product
+{
+    public abstract class ProductDBase
+    {
+        public static string conString { get; set; }
+        public static string source { get; set; }
+
+        public string SetConnect(string source)
+        {
+            //return $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={source};Extended Properties=dBASE IV;Persist Security Info=False;"; //User ID=.\administrator;Password=abc123;
+            return $"Provider=vfpoledb;Data Source={source};Collating Sequence=machine;"; //machine
+        }
+
+        private string GetConnect(string conStr)
+        {
+            // "HrmsV10": "User Id=PERS;Password=pers123;Data Source=191.20.2.36:1521/HRMS:Min Pool Size=10,Incr Pool Size=5;Decr Pool Size=2;Connection Timeout=60;"
+            // return string.IsNullOrWhiteSpace(con) ? "User Id=PERS;Password=pers123;Data Source=191.20.2.36:1521/HRMS:Min Pool Size=10,Incr Pool Size=5;Decr Pool Size=2;Connection Timeout=60;" : con;
+            /*
+             string conString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + FilePath + ";Extended Properties=dBASE IV;";
+               conString = "Provider=vfpoledb;Data Source=" + FilePath + ";Collating Sequence=machine;"; //machine 
+            */
+
+
+            return string.IsNullOrEmpty(conStr) ? conString : conStr;
+        }
+
+        protected IEnumerable<T> Query<T>( string cmd, DynamicParameters parameter = null, string conStr = null)
+        {
+            using (OleDbConnection conn = new OleDbConnection(GetConnect(conStr)))
+            {
+                var res = SqlMapper.Query<T>(conn, cmd, parameter, null, true);
+                return res;
+            }
+        }
+
+        protected int Excuce( string cmd, DynamicParameters parameter = null, string conStr = null)
+        {
+            using (OleDbConnection conn = new OleDbConnection(GetConnect(conStr)))
+            {
+                var res = SqlMapper.Execute(conn, cmd, parameter, null);
+                return res;
+            }
+        }
+
+    }
+}
